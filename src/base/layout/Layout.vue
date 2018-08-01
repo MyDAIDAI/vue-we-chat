@@ -2,7 +2,8 @@
   <div class="layout">
     <div class="content-wrapper">
       <div class="panel">
-        <card @go="showCurrentPage"></card>
+        <card @go="goPage"></card>
+        <slot name="list"></slot>
       </div>
       <div class="box">
         <div class="box-header">
@@ -10,7 +11,9 @@
             <div class="title">{{title}}</div>
           </div>
         </div>
-        <div class="box-body"></div>
+        <div class="box-body">
+          <slot></slot>
+        </div>
       </div>
     </div>
   </div>
@@ -29,12 +32,11 @@ export default {
   },
   data () {
     return {
-      page: ''
     }
   },
   methods: {
-    showCurrentPage (page) {
-      this.page === page
+    goPage (page) {
+      this.$emit('go', page)
     }
   }
 }
