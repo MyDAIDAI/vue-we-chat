@@ -2,7 +2,7 @@
   <div class="card">
     <div class="header">
       <div class="avatar">
-        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533019302401&di=ed0b72fd25e47aa8c540bccdbd072e6c&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fcaef76094b36acaf239dc5be7fd98d1001e99c76.jpg" class="img"/>
+        <img :src="imgUrl" class="img"/>
       </div>
       <div class="info">
         <h3 class="nickname">呆呆</h3>
@@ -27,10 +27,16 @@
 </template>
 
 <script>
+import {avatar} from '@/common/js/config'
 export default {
   name: 'card',
   data () {
-    return {}
+    return {
+      imgUrl: ''
+    }
+  },
+  created () {
+    this.imgUrl = avatar
   },
   methods: {
     goPage (page) {
@@ -141,6 +147,15 @@ export default {
           height: 35px;
           vertical-align: middle;
         }
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        border-bottom: 1px solid #24272c;
+        height: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
     }
   }
