@@ -1,0 +1,147 @@
+<template>
+  <div class="card">
+    <div class="header">
+      <div class="avatar">
+        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533019302401&di=ed0b72fd25e47aa8c540bccdbd072e6c&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fcaef76094b36acaf239dc5be7fd98d1001e99c76.jpg" class="img"/>
+      </div>
+      <div class="info">
+        <h3 class="nickname">呆呆</h3>
+      </div>
+    </div>
+    <div class="search">
+      <i class="search-icon"></i>
+      <input/>
+    </div>
+    <div class="tab">
+      <div class="tab-item" @click="goPage('chat')">
+        <i class="chat"></i>
+      </div>
+      <div class="tab-item" @click="goPage('public')">
+        <i class="public"></i>
+      </div>
+      <div class="tab-item" @click="goPage('contact')">
+        <i class="contact"></i>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'card',
+  data () {
+    return {}
+  },
+  methods: {
+    goPage (page) {
+      this.$emit('go', page)
+    //  todo 点击样式高亮
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss" rel="stylesheet/scss">
+  .card {
+    .header {
+      padding: 18px;
+      padding-bottom: 10px;
+      position: relative;
+      .avatar {
+        display: table-cell;
+        vertical-align: middle;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: nowrap;
+        padding-right: 12px;
+        .img {
+          width: 40px;
+          height: 40px;
+          border-radius: 2px;
+          display: block;
+          cursor: pointer;
+        }
+      }
+      .info {
+        display: table-cell;
+        vertical-align: middle;
+        word-break: break-all;
+        word-wrap: break-word;
+        width: 2000px;
+        .nickname {
+          color: #ffffff;
+          font-weight: 300;
+        }
+      }
+    }
+    .search {
+      position: relative;
+      width: 244px;
+      margin: 0 auto 6px;
+      margin-top: -10px;
+      .search-icon {
+        position: absolute;
+        z-index: 101;
+        top: 1px;
+        background: url("../../common/image/icon.png") no-repeat;
+        background-position: -60px -432px;
+        background-size: 487px 462px;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+      }
+      input {
+        width: 214px;
+        height: 32px;
+        line-height: 32px;
+        border: 0;
+        border-radius: 2px;
+        background: #26292e;
+        color: #fff;
+        padding-left: 30px;
+        font-size: 12px;
+        outline: none;
+      }
+    }
+    .tab {
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 4px;
+      .tab-item {
+        float: left;
+        width: 33.33333333%;
+        position: relative;
+        display: block;
+        text-align: center;
+        .chat {
+          background: url("../../common/image/icon.png") no-repeat;
+          background-position: -185px -96px;
+          background-size: 487px 462px;
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          vertical-align: middle;
+        }
+        .public {
+          background: url("../../common/image/icon.png") no-repeat;
+          background-position: -376px -322px;
+          background-size: 487px 462px;
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          vertical-align: middle;
+        }
+        .contact {
+          background: url("../../common/image/icon.png") no-repeat;
+          background-position: -220px -96px;
+          background-size: 487px 462px;
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+</style>
