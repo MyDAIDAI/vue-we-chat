@@ -14,6 +14,9 @@
         <div class="box-body">
           <slot></slot>
         </div>
+        <div class="box-footer">
+          <slot name="footer"></slot>
+        </div>
       </div>
     </div>
   </div>
@@ -87,6 +90,19 @@ export default {
               font-size: 14px;
             }
           }
+        }
+        .box-body {
+          position: absolute;
+          top: 51px;
+          right: 0;
+          bottom: 0;
+          left: 0;
+        }
+        .box-footer {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          left: 0;
         }
       }
     }
