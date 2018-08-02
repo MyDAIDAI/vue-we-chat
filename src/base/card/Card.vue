@@ -49,6 +49,7 @@ export default {
 
 <style scoped lang="scss" rel="stylesheet/scss">
   .card {
+    z-index: 101;
     .header {
       padding: 18px;
       padding-bottom: 10px;
@@ -146,6 +147,15 @@ export default {
           width: 35px;
           height: 35px;
           vertical-align: middle;
+        }
+        &:after {
+          content: '';
+          position: absolute;
+          top: 7px;
+          right: 0;
+          width: 0;
+          height: 20px;
+          border-right: 1px solid #24272c;
         }
       }
       &:after {
