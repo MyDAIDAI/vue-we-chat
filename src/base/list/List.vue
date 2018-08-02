@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list" ref="wrapper">
     <div class="scroll-wrapper">
       <!--todo 加载中转转-->
       <p class="ico-loading"></p>
@@ -37,6 +37,11 @@
 </template>
 
 <script>
+import BScroll from 'better-scroll'
+// const COMPONENT_NAME = 'scroll'
+const DIRECTION_H = 'horizontal'
+const DIRECTION_V = 'vertical'
+
 export default {
   name: 'list',
   props: {
@@ -49,10 +54,106 @@ export default {
     type: {
       type: String,
       default: 'chat'
+    },
+    data: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    probeType: {
+      type: Number,
+      default: 1
+    },
+    click: {
+      type: Boolean,
+      default: true
+    },
+    listenScroll: {
+      type: Boolean,
+      default: false
+    },
+    listenBeforeScroll: {
+      type: Boolean,
+      default: false
+    },
+    listenScrollEnd: {
+      type: Boolean,
+      default: false
+    },
+    direction: {
+      type: String,
+      default: DIRECTION_V
+    },
+    scrollbar: {
+      type: null,
+      default: false
+    },
+    pullDownRefresh: {
+      type: null,
+      default: false
+    },
+    pullUpLoad: {
+      type: null,
+      default: false
+    },
+    startY: {
+      type: Number,
+      default: 0
+    },
+    refreshDelay: {
+      type: Number,
+      default: 20
+    },
+    freeScroll: {
+      type: Boolean,
+      default: false
+    },
+    mouseWheel: {
+      type: Boolean,
+      default: false
+    },
+    bounce: {
+      default: true
+    },
+    zoom: {
+      default: false
     }
   },
   data () {
-    return {}
+    return {
+      scroll: ''
+    }
+  },
+  mounted () {
+    setTimeout(() => {
+      this.initScroll()
+    }, 20)
+  },
+  methods: {
+    initScroll () {
+      if (!this.$refs.wrapper) {
+        return
+      }
+      // if (this.$refs.listWrapper && (this.pullDownRefresh || this.pullUpLoad)) {
+      //   this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`
+      // }
+      let options = {
+        probeType: this.probeType,
+        click: this.click,
+        scrollY: this.freeScroll || this.direction === DIRECTION_V,
+        scrollX: this.freeScroll || this.direction === DIRECTION_H,
+        scrollbar: this.scrollbar,
+        pullDownRefresh: this.pullDownRefresh,
+        pullUpLoad: this.pullUpLoad,
+        startY: this.startY,
+        freeScroll: this.freeScroll,
+        mouseWheel: this.mouseWheel,
+        bounce: this.bounce,
+        zoom: this.zoom
+      }
+      this.scroll = new BScroll(this.$refs.wrapper, options)
+    }
   }
 }
 </script>
@@ -67,10 +168,11 @@ export default {
   }
 .list {
   position: absolute;
-  top:154px;
-  bottom: 0;
+  top:160px;
+  bottom: 10px;
   right: 0;
   left: 0;
+  overflow: hidden;
   .chat {
     .chat-item {
       overflow: hidden;
