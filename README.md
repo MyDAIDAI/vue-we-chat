@@ -10,13 +10,14 @@
 - 安装依赖 `npm install`
 - 本地开发 `npm run dev`
 
-## `mongodb`
+## mongodb
 - 开启`mongodb`服务 `sudo mongod`
 
 ## 功能
 
-### `server`
+### Server
 - [ ] **用户管理**
     - [x] 注册
     - [ ] 登录
-      
+    
+### Client
