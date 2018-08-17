@@ -6,19 +6,31 @@ class UserService extends Service {
     const { ctx } = this;
     const User = ctx.model.User;
     const { nickname, userEmail, password } = userInfo;
-    // let isRegister = await User.findOne({userEmail: userEmail});
-    // console.log(isRegister)
-    // if (!isRegister) {
-    // }
-    // return user
+    if (!(userEmail && password)) {
+      return {
+        msg: '用户邮箱和密码不能为空',
+      };
+    }
     const userObj = new User({ nickname, userEmail, password });
-    await userObj.save();
-    const userRegister = await User.findOne({ userEmail });
-    ctx.status = 200;
-    ctx.body = {
-      success: true,
-      data: userRegister,
-    };
+    let userRegister = await User.findOne({ userEmail });
+    let retData = {};
+    if (!userRegister) {
+      await userObj.save();
+      userRegister = await User.findOne({ userEmail });
+      retData = {
+        user: {
+          nickname: userRegister.nickname,
+          userEmail: userRegister.userEmail,
+          id: userRegister.id,
+        },
+        msg: '注册成功',
+      };
+    } else {
+      retData = {
+        msg: '该用户已注册，请登录',
+      };
+    }
+    return retData;
   }
 }
 module.exports = UserService;

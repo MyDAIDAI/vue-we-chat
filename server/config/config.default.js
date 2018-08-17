@@ -15,7 +15,7 @@ module.exports = appInfo => {
     },
     domainWhiteList: [
       'http://localhost:7001',
-      'http://127.0.0.1:7001'
+      'http://127.0.0.1:7001',
     ],
   };
 

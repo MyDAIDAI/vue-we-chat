@@ -9,6 +9,7 @@ class UserController extends Controller {
     const res = await service.user.create(ctx.request.body);
     ctx.status = 200;
     ctx.body = {
+      code: 200,
       success: true,
       data: res,
     };
