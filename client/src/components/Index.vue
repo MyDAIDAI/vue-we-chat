@@ -2,32 +2,30 @@
   <div class="wrapper">
     <div class="card">
       <h2 class="title">VUE-WE-CHAT</h2>
-      <div class="login">
-        <div class="form-item">
-          <my-input :tip="tipStr.userEmail"></my-input>
-        </div>
-        <div>
-          <my-input :tip="tipStr.password" type="password"></my-input>
-        </div>
-      </div>
-      <div class="register"></div>
+      <login @goRegister="formType = 'register'" v-if="formType === 'login'"></login>
+      <register @goLogin="formType = 'login'" v-else></register>
     </div>
   </div>
 </template>
 
 <script>
-import MyInput from '@/base/input/Input'
+
+import Login from '@/base/login/Login'
+import Register from '@/base/register/Register'
 export default {
   name: 'Index',
-  components: { MyInput },
+  components: { Login, Register },
   data () {
     return {
       tipStr: {
         nickname: '输入您的昵称',
         userEmail: '输入您的邮箱',
         password: '输入您的密码'
-      }
+      },
+      formType: 'login'
     }
+  },
+  methods: {
   }
 }
 </script>
@@ -59,14 +57,9 @@ export default {
       .title {
         text-align: center;
         color: #353535;
+        margin-top: 20px;
       }
-      .login {
-        padding: 25px;
-        margin-top: 30px;
-        .form-item {
-          height: 60px;
-        }
-      }
+
     }
   }
 </style>
