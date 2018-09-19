@@ -4,6 +4,7 @@ const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
 
+// 返回不同环境下的static目录位置
 exports.assetsPath = function (_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
     ? config.build.assetsSubDirectory
@@ -12,6 +13,7 @@ exports.assetsPath = function (_path) {
   return path.posix.join(assetsSubDirectory, _path)
 }
 
+// 为不同的css预处理器提供统一的生成方式
 exports.cssLoaders = function (options) {
   options = options || {}
 
@@ -66,6 +68,7 @@ exports.cssLoaders = function (options) {
   }
 }
 
+// 为单独的style文件创建加载器配置
 // Generate loaders for standalone style files (outside of .vue)
 exports.styleLoaders = function (options) {
   const output = []
@@ -82,6 +85,7 @@ exports.styleLoaders = function (options) {
   return output
 }
 
+// 以类似浏览器的通知形式展示信息
 exports.createNotifierCallback = () => {
   const notifier = require('node-notifier')
 

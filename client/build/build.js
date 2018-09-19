@@ -1,4 +1,5 @@
 'use strict'
+// 判断当前node和npm的版本号，删除打包目录下的文件，再进行打包
 require('./check-versions')()
 
 process.env.NODE_ENV = 'production'

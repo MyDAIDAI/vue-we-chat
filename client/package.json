@@ -13,7 +13,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "better-scroll": "^1.12.5",
+    "element-ui": "^2.4.7",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

@@ -1,13 +1,14 @@
 'use strict'
-const path = require('path')
-const utils = require('./utils')
-const config = require('../config')
-const vueLoaderConfig = require('./vue-loader.conf')
+const path = require('path') // 提供文件处理路径的小工具
+const utils = require('./utils') // 为整个框架提供方法
+const config = require('../config') // 环境配置文件
+const vueLoaderConfig = require('./vue-loader.conf') // 分析是否是生产环境，然后根据不同的环境来加载配置功能
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+// eslint 的rules
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
@@ -19,6 +20,7 @@ const createLintingRule = () => ({
   }
 })
 
+// webpack 基础配置
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -77,6 +79,8 @@ module.exports = {
       }
     ]
   },
+  // 用于配置polyfill或mock某些Node.js全局变量和模块，
+  // 使最初编写的nodejs代码可以在浏览器中运行
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).

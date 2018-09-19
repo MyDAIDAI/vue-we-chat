@@ -1,4 +1,5 @@
 'use strict'
+// 检测当前环境中的node和npm版本和我们需要的是否一致
 const chalk = require('chalk')
 const semver = require('semver')
 const packageConfig = require('../package.json')

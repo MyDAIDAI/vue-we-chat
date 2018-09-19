@@ -1,7 +1,7 @@
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-
+const devRemoteUrl = 'http://127.0.0.1:7001/'
 const path = require('path')
 
 module.exports = {
@@ -10,8 +10,14 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
-
+    // proxyTable: {},
+    proxyTable: {
+      '/': {
+        target: devRemoteUrl,
+        pathRewrite: {'^/' : '/'}, // 重写路径
+        changeOrigin: true
+      }
+    },
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

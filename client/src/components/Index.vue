@@ -3,7 +3,7 @@
     <div class="card">
       <h2 class="title">VUE-WE-CHAT</h2>
       <login @goRegister="formType = 'register'" v-if="formType === 'login'"></login>
-      <register @goLogin="formType = 'login'" v-else></register>
+      <register @goLogin="formType = 'login'" v-else @registerBtnClick="registerHandler"></register>
     </div>
   </div>
 </template>
@@ -12,6 +12,9 @@
 
 import Login from '@/base/login/Login'
 import Register from '@/base/register/Register'
+import UserApi from '@/api/user/index'
+import { ERR_OK } from '@/common/js/config'
+
 export default {
   name: 'Index',
   components: { Login, Register },
@@ -26,6 +29,17 @@ export default {
     }
   },
   methods: {
+    registerHandler (data) {
+      UserApi.register(data)
+        .then(res => {
+          if (res.code === ERR_OK) {
+            this.$message({
+              message: res.data.msg,
+              type: 'success'
+            })
+          }
+        })
+    }
   }
 }
 </script>

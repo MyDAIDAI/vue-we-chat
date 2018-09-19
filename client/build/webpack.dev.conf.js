@@ -68,6 +68,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   ]
 })
 
+// 为了确保启动程序时，如果端口被占用，会通过portfinder发布新端口
 module.exports = new Promise((resolve, reject) => {
   portfinder.basePort = process.env.PORT || config.dev.port
   portfinder.getPort((err, port) => {
