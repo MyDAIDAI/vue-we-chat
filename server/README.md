@@ -31,3 +31,10 @@ $ npm stop
 
 
 [egg]: https://eggjs.org
+
+## mongodb
+
+### Development
+ ```bash
+ $ sudo mongod
+ ```
