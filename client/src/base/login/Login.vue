@@ -1,10 +1,10 @@
 <template>
   <div class="form">
     <div class="form-item">
-      <my-input tip="输入您的邮箱"></my-input>
+      <my-input tip="输入您的邮箱" ref="email"></my-input>
     </div>
     <div class="form-item">
-      <my-input tip="输入您的密码" type="password"></my-input>
+      <my-input tip="输入您的密码" type="password" ref="password"></my-input>
     </div>
     <div class="form-item btn">
       <my-button text="登录" type="submit" long="long" @btnClick="loginBtnClick"></my-button>
@@ -29,7 +29,10 @@ export default {
       this.$emit('goRegister')
     },
     loginBtnClick () {
-      this.$emit('loginBtnClick')
+      this.$emit('loginBtnClick', {
+        userEmail: this.$refs.email.inputValue,
+        password: this.$refs.password.inputValue
+      })
     }
   }
 }

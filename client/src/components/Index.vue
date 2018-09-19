@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="card">
       <h2 class="title">VUE-WE-CHAT</h2>
-      <login @goRegister="formType = 'register'" v-if="formType === 'login'"></login>
+      <login @goRegister="formType = 'register'" v-if="formType === 'login'" @loginBtnClick="loginHandler"></login>
       <register @goLogin="formType = 'login'" v-else @registerBtnClick="registerHandler"></register>
     </div>
   </div>
@@ -37,6 +37,21 @@ export default {
               message: res.data.msg,
               type: 'success'
             })
+          }
+        })
+    },
+    loginHandler (data) {
+      UserApi.login(data)
+        .then(res => {
+          if (res.code === ERR_OK) {
+            if (res.data.msg === '登录成功') {
+              this.$router.push('/talk')
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'error'
+              })
+            }
           }
         })
     }
