@@ -22,17 +22,26 @@ export default new Router({
     {
       path: '/talk',
       name: 'talk',
-      component: Talk
+      component: Talk,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/public',
       name: 'public',
-      component: Public
+      component: Public,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/contact',
       name: 'contact',
-      component: Contact
+      component: Contact,
+      meta: {
+        requireAuth: true
+      }
     }
   ]
 })

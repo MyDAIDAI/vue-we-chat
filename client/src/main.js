@@ -8,6 +8,17 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    if (document.cookie) {
+      next()
+    } else {
+      next({path: '/index'})
+    }
+  } else {
+    next()
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({
