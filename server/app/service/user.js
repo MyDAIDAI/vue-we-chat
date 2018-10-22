@@ -45,7 +45,9 @@ class UserService extends Service {
     let retData = {};
     if (userLogin) {
       if (password === userLogin.password) {
-        ctx.cookies.set(userLogin.userEmail, userLogin.password);
+        ctx.cookies.set('userEmail', Buffer.from(userLogin.userEmail).toString('base64') ,{
+          httpOnly: false
+        });
         retData = {
           msg: '登录成功',
           user: {
