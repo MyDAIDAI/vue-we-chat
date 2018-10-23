@@ -5,8 +5,11 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import store from './store'
+import Vuex from 'vuex'
 
 Vue.use(ElementUI)
+Vue.use(Vuex)
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
@@ -24,6 +27,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

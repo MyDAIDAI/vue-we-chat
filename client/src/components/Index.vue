@@ -45,6 +45,7 @@ export default {
         .then(res => {
           if (res.code === ERR_OK) {
             if (res.data.msg === '登录成功') {
+              this.$store.commit('setUser', res.data.user)
               this.$router.push('/talk')
             } else {
               this.$message({
