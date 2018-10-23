@@ -48,6 +48,9 @@ class UserService extends Service {
         ctx.cookies.set('userEmail', Buffer.from(userLogin.userEmail).toString('base64') ,{
           httpOnly: false
         });
+        ctx.cookies.set('nickname', Buffer.from(userLogin.nickname).toString('base64') ,{
+          httpOnly: false
+        });
         retData = {
           msg: '登录成功',
           user: {

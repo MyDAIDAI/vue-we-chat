@@ -4,9 +4,16 @@ const state = {
 }
 
 const getters = {
+  userInfo: (state) => {
+    return {
+      nickname: state.nickname,
+      userEmail: state.userEmail
+    }
+  }
 }
 
-const actions = {}
+const actions = {
+}
 
 const mutations = {
   setUser (state, userinfo) {
