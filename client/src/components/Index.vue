@@ -14,6 +14,7 @@ import Login from '@/base/login/Login'
 import Register from '@/base/register/Register'
 import UserApi from '@/api/user/index'
 import { ERR_OK } from '@/common/js/config'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'Index',
@@ -32,7 +33,7 @@ export default {
     registerHandler (data) {
       UserApi.register(data)
         .then(res => {
-          if (res.code === ERR_OK) {
+          if (res.data.code === ERR_OK) {
             this.$message({
               message: res.data.msg,
               type: 'success'
@@ -43,9 +44,9 @@ export default {
     loginHandler (data) {
       UserApi.login(data)
         .then(res => {
-          if (res.code === ERR_OK) {
+          if (res.data.code === ERR_OK) {
             if (res.data.msg === '登录成功') {
-              this.$store.commit('setUser', res.data.user)
+              this.createToken(res.data.token)
               this.$router.push('/talk')
             } else {
               this.$message({
@@ -55,7 +56,10 @@ export default {
             }
           }
         })
-    }
+    },
+    ...mapMutations({
+      createToken: 'CREATE_TOKEN'
+    })
   }
 }
 </script>

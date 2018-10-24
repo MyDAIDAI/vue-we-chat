@@ -13,7 +13,8 @@ Vue.use(Vuex)
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    if (document.cookie) {
+    const isLogin = store.state.token.token // 根据token判断是否登录
+    if (isLogin) {
       next()
     } else {
       next({path: '/index'})

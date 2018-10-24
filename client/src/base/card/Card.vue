@@ -5,7 +5,7 @@
         <img :src="imgUrl" class="img"/>
       </div>
       <div class="info">
-        <h3 class="nickname">{{userInfo.nickname}}</h3>
+        <h3 class="nickname">{{user.nickname}}</h3>
       </div>
     </div>
     <div class="search">
@@ -28,11 +28,19 @@
 
 <script>
 import {avatar} from '@/common/js/config'
-import { mapGetters } from 'vuex'
 export default {
   name: 'card',
-  computed: {
-    ...mapGetters(['userInfo'])
+  props: {
+    user: {
+      type: Object,
+      default: () => {
+        return {
+          nickname: '',
+          userEmail: '',
+          avatar: ''
+        }
+      }
+    }
   },
   data () {
     return {

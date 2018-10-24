@@ -2,7 +2,7 @@
   <div class="layout">
     <div class="content-wrapper">
       <div class="panel">
-        <card @go="goPage"></card>
+        <card @go="goPage" :user="userInfo"></card>
         <slot name="list"></slot>
       </div>
       <div class="box">
@@ -24,9 +24,14 @@
 
 <script>
 import Card from '@/base/card/Card'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Layout',
   components: { Card },
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
   props: {
     title: {
       type: String,
@@ -35,7 +40,14 @@ export default {
   },
   data () {
     return {
+      user: {
+        nickname: '',
+        userEmail: '',
+        avatar: ''
+      }
     }
+  },
+  created () {
   },
   methods: {
     goPage (page) {
