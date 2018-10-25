@@ -9,6 +9,9 @@
 ## 后端 server
 - 安装依赖 `npm install`
 - 本地开发 `npm run dev`
+- 调试 
+  - `npm run debug`
+  - 浏览器在控制台打开`DevTools`地址，在`sources`中找到文件，打断点进行调试
 
 ## mongodb
 - 开启`mongodb`服务 `sudo mongod`
@@ -26,7 +29,7 @@
 - [x] **用户管理**
   - [x] 注册
   - [x] 登录
-  - [ ] 登录状态
+  - [x] 登录状态
 - [ ] 好友管理
   - [ ] 添加好友
   - [ ] 好友列表
