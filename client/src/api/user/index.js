@@ -6,5 +6,8 @@ export default {
   },
   login (data) {
     return api.post(`/api/login`, data)
+  },
+  getUserInfo () {
+    return api.get('/api/getuserinfo')
   }
 }

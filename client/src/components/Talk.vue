@@ -44,7 +44,10 @@
 <script>
 import Layout from '@/base/layout/Layout'
 import List from '@/base/list/List'
-import { avatar } from '@/common/js/config'
+import { avatar, ERR_OK } from '@/common/js/config'
+import UserApi from '@/api/user/index'
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'Talk',
   components: { Layout, List },
@@ -171,12 +174,24 @@ export default {
   },
   created () {
     this.listData = this.chatList
+    this.getUserInfo()
   },
   methods: {
+    getUserInfo () {
+      UserApi.getUserInfo()
+        .then(res => {
+          if (res.data.code === ERR_OK) {
+            this.setUserInfo(res.data.data)
+          }
+        })
+    },
     showCurrenList (page) {
       this.listType = page
       this.listData = this[page + 'List']
-    }
+    },
+    ...mapMutations({
+      setUserInfo: 'SET_USER'
+    })
   }
 }
 </script>

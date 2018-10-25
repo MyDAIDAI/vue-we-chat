@@ -2,7 +2,7 @@
   <div class="card">
     <div class="header">
       <div class="avatar">
-        <img :src="imgUrl" class="img"/>
+        <img :src="user.avatar" class="img"/>
       </div>
       <div class="info">
         <h3 class="nickname">{{user.nickname}}</h3>
