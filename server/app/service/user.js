@@ -13,10 +13,10 @@ class UserService extends Service {
     const User = ctx.model.User;
     const { nickname, userEmail, password } = userInfo;
     // if (!(userEmail && password)) {
-    //   return {
-    //     msg: '用户邮箱和密码不能为空',
-    //   };
-    // }
+    //     //   return {
+    //     //     msg: '用户邮箱和密码不能为空',
+    //     //   };
+    //     // }
     const userObj = new User({ nickname, userEmail, password });
     let userRegister = await User.findOne({ userEmail });
     let retData = {};
@@ -24,11 +24,7 @@ class UserService extends Service {
       await userObj.save();
       userRegister = await User.findOne({ userEmail });
       retData = {
-        user: {
-          nickname: userRegister.nickname,
-          userEmail: userRegister.userEmail,
-          id: userRegister.id,
-        },
+        user: userRegister,
         msg: '注册成功',
         code: 200
       };
@@ -40,6 +36,12 @@ class UserService extends Service {
     }
     return retData;
   }
+
+  /**
+   * 用户登录
+   * @param userInfo
+   * @returns {Promise<{code: number, msg: string}|{code: number, msg: string}|{msg: string, code: number, user: {uid: *, nickname: *, userEmail: string|*|userEmail}, token: *}>}
+   */
   async login(userInfo) {
     const { ctx, app } = this;
     const User = ctx.model.User;
@@ -53,15 +55,10 @@ class UserService extends Service {
           uid: userLogin._id,
           exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 * 7 // 过期时间为7天
         }, app.config.cert);
-        console.log(token);
         retData = {
           msg: '登录成功',
           code: 200,
-          user: {
-            uid: userLogin._id,
-            nickname: userLogin.nickname,
-            userEmail: userLogin.userEmail
-          },
+          user: userLogin,
           token
         }
       } else {
@@ -77,6 +74,15 @@ class UserService extends Service {
       }
     }
     return retData
+  }
+  async getUserInfo(userId) {
+    const { ctx } = this;
+    const User = ctx.model.User;
+    const userInfo = await User.findOne({ _id: userId })
+    return {
+      code: 200,
+      data: userInfo
+    }
   }
 }
 module.exports = UserService;

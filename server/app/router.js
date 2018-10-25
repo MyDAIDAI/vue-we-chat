@@ -8,4 +8,5 @@ module.exports = app => {
   const verifyToken = app.middlewares.verifyToken();
   router.post('register', '/api/register', controller.user.create);
   router.post('login', '/api/login', controller.user.login);
+  router.get('getuserinfo', '/api/getuserinfo', verifyToken,  controller.user.getUserInfo)
 };
