@@ -1,41 +1,68 @@
-import axios from 'axios'
+import store from '../store/index'
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+require('es6-promise').polyfill()
+require('isomorphic-fetch')
 
-// axios.interceptors.request.use(function (config) {
-//   return config
-// }, function (error) {
-//   return Promise.reject(error)
-// })
-
-// axios.interceptors.response.use(function (response) {
-//   return response
-// }, function (error) {
-//   return Promise.reject(error)
-// })
-
-export function fetch (url, params) {
-  return new Promise((resolve, reject) => {
-    axios.post(url, params)
-      .then(response => {
-        resolve(response.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
+function parseResponse (response) {
+  return Promise.all([response.status, response.statusText, response.json()])
 }
 
-export function get (url) {
-  return new Promise((resolve, reject) => {
-    axios.get(url)
-      .then(response => {
-        resolve(response.data)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
+function checkStatus ([status, statusText, data]) {
+  if (status >= 200 && status <= 300) {
+    return data
+  }
+  if (status === 401) {
+    if (data.message === 'token expired' || data.message === 'invalid token') {
+      store.commit('DELETE_TOKEN')
+    }
+  }
+  const error = new Error(statusText)
+  error.status = status
+  error.error_message = data
+  return Promise.reject(error)
 }
 
-export default {get, fetch}
+export default {
+  get (url, param = {}, headers = {}) {
+    const reqHeaders = new Headers(headers)
+    reqHeaders.append('Accept', 'application/json')
+    if (store.state.token.token) {
+      reqHeaders.append('Authorization', `Bearer ${store.state.token.token}`)
+    }
+    const query = []
+    Object.keys(param).forEach(item => {
+      query.push(`${item}=${encodeURIComponent(param[item])}`)
+    })
+    const params = query.length ? `?${query.join('&')}` : ''
+    url = url + params
+
+    const init = {
+      method: 'GET',
+      headers: reqHeaders,
+      credential: 'include',
+      cache: 'default',
+      mode: 'cors'
+    }
+    return fetch(url, init)
+      .then(parseResponse)
+      .then(checkStatus)
+  },
+  post (url, param = {}, headers = {}) {
+    const reqHeaders = new Headers(headers)
+    reqHeaders.append('Content-Type', 'application/json')
+    reqHeaders.append('Accept', 'application/json')
+    if (store.state.token.token) {
+      reqHeaders.append('Authorization', `Bearer ${store.state.token.token}`)
+    }
+    const init = {
+      method: 'POST',
+      headers: reqHeaders,
+      credential: 'include',
+      mode: 'cors',
+      body: JSON.stringify(param)
+    }
+    return fetch(url, init)
+      .then(parseResponse)
+      .then(checkStatus)
+  }
+}
