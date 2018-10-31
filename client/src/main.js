@@ -7,9 +7,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from './store'
 import Vuex from 'vuex'
+import VueSocketio from 'vue-socket.io'
 
 Vue.use(ElementUI)
 Vue.use(Vuex)
+Vue.use(VueSocketio, process.env.socketHost)
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {

@@ -17,16 +17,17 @@
     "eslint-config-egg": "^6.0.0",
     "webstorm-disable-index": "^1.2.0",
     "egg-mongoose": "^3.1.0",
-    "jsonwebtoken": "^8.3.0"
+    "jsonwebtoken": "^8.3.0",
+    "egg-socket.io": "^4.1.5"
   },
   "engines": {
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-example",
+    "start": "egg-scripts start --daemon --title=egg-server-example --sticky",
     "stop": "egg-scripts stop --title=egg-server-example",
-    "dev": "egg-bin dev",
-    "debug": "egg-bin debug",
+    "dev": "egg-bin dev --sticky",
+    "debug": "egg-bin debug --sticky",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test --full-trace",
     "cov": "egg-bin cov",

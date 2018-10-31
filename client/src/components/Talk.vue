@@ -1,5 +1,5 @@
 <template>
-  <layout @go="showCurrenList">
+  <layout @go="showCurrentList">
     <list slot="list" :lists="listData" :type="listType"></list>
     <div ref="wrapper" class="chat-box">
       <div class="srcoll-wrapper">
@@ -176,6 +176,19 @@ export default {
     this.listData = this.chatList
     this.getUserInfo()
   },
+  mounted () {
+    this.$socket.emit('connect', '')
+    this.$socket.emit('server', { fuck: 'u' })
+  },
+  sockets: {
+    connect () { // 这里是监听connect事件
+      this.socketId = this.$socket.id
+      console.log('socketId', this.socketId)
+    },
+    res (val) {
+      console.log('res', val)
+    }
+  },
   methods: {
     getUserInfo () {
       UserApi.getUserInfo()
@@ -185,7 +198,7 @@ export default {
           }
         })
     },
-    showCurrenList (page) {
+    showCurrentList (page) {
       this.listType = page
       this.listData = this[page + 'List']
     },
