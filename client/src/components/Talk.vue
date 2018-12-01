@@ -1,6 +1,5 @@
 <template>
-  <layout @go="showCurrentList">
-    <list slot="list" :lists="listData" :type="listType"></list>
+  <div>
     <div ref="wrapper" class="chat-box">
       <div class="srcoll-wrapper">
         <div v-for="message in chatContent" :key="message.id">
@@ -24,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div class="footer" slot="footer">
+    <div class="footer">
       <div class="toolbar">
         <i class="emoji"></i>
         <i class="screencut"></i>
@@ -38,111 +37,16 @@
         <a class="btn btn_send" href="javascript:;">发送</a>
       </div>
     </div>
-  </layout>
+  </div>
 </template>
 
 <script>
-import Layout from '@/base/layout/Layout'
-import List from '@/base/list/List'
-import { avatar, ERR_OK } from '@/common/js/config'
-import UserApi from '@/api/user/index'
-import { mapMutations } from 'vuex'
-
+import { avatar } from '@/common/js/config'
 export default {
   name: 'Talk',
-  components: { Layout, List },
+  components: {},
   data () {
     return {
-      listType: 'chat',
-      chatList: [
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        }
-      ],
-      contactList: [
-        {
-          letter: 'A',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'B',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'C',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'D',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        }
-      ],
-      listData: [],
       preEditable: false,
       chatContent: [
         {
@@ -173,8 +77,6 @@ export default {
     }
   },
   created () {
-    this.listData = this.chatList
-    this.getUserInfo()
   },
   mounted () {
     this.$socket.emit('connect', '')
@@ -190,21 +92,6 @@ export default {
     }
   },
   methods: {
-    getUserInfo () {
-      UserApi.getUserInfo()
-        .then(res => {
-          if (res.data.code === ERR_OK) {
-            this.setUserInfo(res.data.data)
-          }
-        })
-    },
-    showCurrentList (page) {
-      this.listType = page
-      this.listData = this[page + 'List']
-    },
-    ...mapMutations({
-      setUserInfo: 'SET_USER'
-    })
   }
 }
 </script>
@@ -342,6 +229,10 @@ export default {
     height: 180px;
     margin-right: 19px;
     border-top: 1px solid #d6d6d6;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
     .toolbar {
       height: 30px;
       padding: 5px 17px;

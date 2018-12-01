@@ -9,5 +9,8 @@ export default {
   },
   getUserInfo () {
     return api.get('/api/getuserinfo')
+  },
+  find (name) {
+    return api.get(`/api/user/find/${name}`)
   }
 }

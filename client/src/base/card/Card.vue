@@ -10,7 +10,22 @@
     </div>
     <div class="search">
       <i class="search-icon"></i>
-      <input/>
+      <input @input="searchInput"/>
+      <div class="search-list" v-if="searchResult.length > 0">
+        <div class="list-wrapper">
+          <div class="list-content" v-for="(list, index) in searchResult" :key="index">
+            <p>{{list.type}}</p>
+            <div class="item" v-for="(item, i) in list.value" :key="i">
+              <div class="avatar">
+                <img :src="item.avatar"/>
+              </div>
+              <div class="info">
+                <h4 class="nickname">{{item.nickname}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="tab">
       <div class="tab-item" @click="goPage('chat')">
@@ -31,6 +46,12 @@ import {avatar} from '@/common/js/config'
 export default {
   name: 'card',
   props: {
+    searchResult: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     user: {
       type: Object,
       default: () => {
@@ -54,7 +75,8 @@ export default {
     goPage (page) {
       this.$emit('go', page)
     //  todo 点击样式高亮
-    }
+    },
+    searchInput () {}
   }
 }
 </script>
@@ -121,6 +143,57 @@ export default {
         padding-left: 30px;
         font-size: 12px;
         outline: none;
+      }
+      .search-list {
+        background: #33363b;
+        width: 244px;
+        position: absolute;
+        top: 36px;
+        left: 0;
+        box-shadow: 0 0 10px #2a2a2a;
+        -moz-box-shadow: 0 0 10px #2a2a2a;
+        -webkit-box-shadow: 0 0 10px #2a2a2a;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        z-index: 99;
+        outline: none;
+        .list-wrapper {
+          overflow: hidden;
+          .list-content {
+            .item {
+              overflow: hidden;
+              padding: 10px 9px;
+              cursor: pointer;
+              border-bottom: 1px solid #33363b;
+              background-color: #393c43;
+              .avatar {
+                float: left;
+                margin-right: 10px;
+                img {
+                  display: block;
+                  width: 30px;
+                  height: 30px;
+                  border-radius: 2px;
+                }
+              }
+              .info {
+                overflow: hidden;
+                line-height: 30px;
+                .nickname {
+                  font-weight: 400;
+                  color: #fff;
+                  font-size: 14px;
+                  width: 100%;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  word-wrap: normal;
+                }
+              }
+            }
+          }
+        }
       }
     }
     .tab {
