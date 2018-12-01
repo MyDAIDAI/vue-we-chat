@@ -9,4 +9,4 @@ class UserController extends Controller {
     await ctx.socket.emit('res', `Hi! I've got your message: ${message}`);
   }
 }
-module.exports = UserController;
+module.exports = UserController

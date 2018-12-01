@@ -75,14 +75,37 @@ class UserService extends Service {
     }
     return retData
   }
+
+  /**
+   * 获取用户信息
+   * @param userId
+   * @returns {Promise<{code: number, data: *}>}
+   */
   async getUserInfo(userId) {
     const { ctx } = this;
     const User = ctx.model.User;
-    const userInfo = await User.findOne({ _id: userId })
+    let sendDataFormat = {nickname: 1, userEmail: 1, _id: 1, avatar: 1, friends: 1, updateTime: 1}
+    const userInfo = await User.findOne({ _id: userId }, sendDataFormat)
     return {
       code: 200,
       data: userInfo
     }
+  }
+
+  /**
+   * 查找用户
+   * @param name
+   * @returns {Promise<void>}
+   */
+  async find(name) {
+    let { ctx } = this;
+    let User = ctx.model.User;
+    let sendDataFormat = {nickname: 1, userEmail: 1, _id: 1, avatar: 1}
+    let results = await User.find({nickname: name}, sendDataFormat);
+    return {
+      code: 200,
+      data: results
+    };
   }
 }
 module.exports = UserService;
