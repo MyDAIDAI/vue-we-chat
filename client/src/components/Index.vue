@@ -34,11 +34,10 @@ export default {
       UserApi.register(data)
         .then(res => {
           if (res.data.code === ERR_OK) {
-            this.$message({
-              message: res.data.msg,
-              type: 'success'
-            })
+            this.messageTipHandler(res.data.msg, 'success')
           }
+        }).catch(err => {
+          this.messageTipHandler(err.errorMessage.message, 'error')
         })
     },
     loginHandler (data) {
@@ -49,13 +48,18 @@ export default {
               this.createToken(res.data.token)
               this.$router.push('/talk')
             } else {
-              this.$message({
-                message: res.data.msg,
-                type: 'error'
-              })
+              this.messageTipHandler(res.data.msg, 'error')
             }
           }
+        }).catch(err => {
+          this.messageTipHandler(err.errorMessage.message, 'error')
         })
+    },
+    messageTipHandler (message, type) {
+      this.$message({
+        message: message,
+        type: type
+      })
     },
     ...mapMutations({
       createToken: 'CREATE_TOKEN'

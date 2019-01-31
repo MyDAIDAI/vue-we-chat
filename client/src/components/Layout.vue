@@ -2,7 +2,7 @@
   <div class="layout">
     <div class="content-wrapper">
       <div class="panel">
-        <card @go="goPage" :user="userInfo" :searchResult="searchResult"></card>
+        <card @go="goPage" :user="userInfo" :searchResult="searchResult" @input="findUserList"></card>
         <list :lists="listData" :type="listType"></list>
       </div>
       <div class="box">
@@ -39,12 +39,6 @@ export default {
     title: {
       type: String,
       default: ''
-    },
-    searchResult: {
-      type: Array,
-      default: () => {
-        return []
-      }
     }
   },
   data () {
@@ -145,7 +139,7 @@ export default {
       ],
       listData: [],
       preEditable: false,
-
+      searchResult: []
     }
   },
   created () {
@@ -164,16 +158,13 @@ export default {
           }
         })
     },
-    findUserList () {
-      UserApi.find()
+    findUserList (value) {
+      UserApi.find(value)
         .then(res => {
           if (res.data.code === ERR_OK) {
+            this.searchResult = res.data.data
           }
         })
-    },
-    showCurrentList (page) {
-      this.listType = page
-      this.listData = this[page + 'List']
     },
     ...mapMutations({
       setUserInfo: 'SET_USER'
