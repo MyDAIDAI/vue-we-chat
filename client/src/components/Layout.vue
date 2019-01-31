@@ -146,6 +146,19 @@ export default {
     this.listData = this.chatList
     this.getUserInfo()
   },
+  sockets: {
+    connect () { // 这里是监听connect事件
+      this.socketId = this.$socket.id
+      console.log('connect server: socketId', this.socketId)
+    },
+    res (val) {
+      console.log('client receive messgae : ', val)
+    }
+  },
+  mounted () {
+    // 往服务端发送消息
+    this.$socket.emit('server', {nickname: '111'})
+  },
   methods: {
     goPage (page) {
       this.$emit('go', page)

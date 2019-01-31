@@ -27,6 +27,11 @@ class UserController extends Controller {
     const res = await service.user.find(name);
     resHandle(ctx, res);
   }
+  async requestFriend() {
+    const { ctx, service } = this;
+    const res = await service.user.requestFriend(ctx.request.body);
+    resHandle(ctx, res);
+  }
 }
 function resHandle(ctx, res) {
   if (res.code === 200) {

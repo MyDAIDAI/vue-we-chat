@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const Service = require('egg').Service;
+let currentUser = {};
 class UserService extends Service {
   /**
    * 创建用户
@@ -12,11 +13,6 @@ class UserService extends Service {
     const { ctx } = this;
     const User = ctx.model.User;
     const { nickname, userEmail, password } = userInfo;
-    // if (!(userEmail && password)) {
-    //     //   return {
-    //     //     msg: '用户邮箱和密码不能为空',
-    //     //   };
-    //     // }
     const userObj = new User({ nickname, userEmail, password });
     let userRegister = await User.findOne({ userEmail });
     let retData = {};
@@ -61,6 +57,12 @@ class UserService extends Service {
           user: userLogin,
           token,
         };
+        await User.updateOne(
+          { userEmail: userLogin.userEmail },
+          {
+            $set: { loginStatus: true },
+          });
+        currentUser = userLogin;
       } else {
         retData = {
           code: 401,
@@ -99,7 +101,7 @@ class UserService extends Service {
   async find(name) {
     const { ctx } = this;
     const User = ctx.model.User;
-    const sendDataFormat = { nickname: 1, userEmail: 1, _id: 1, avatar: 1 };
+    const sendDataFormat = { nickname: 1, userEmail: 1, avatar: 1 };
     const results = await User.find({ nickname: name }, sendDataFormat);
     return {
       code: 200,
@@ -108,6 +110,19 @@ class UserService extends Service {
         value: results,
       }],
     };
+  }
+  async requestFriend(userInfo) {
+    const { ctx } = this;
+    const User = ctx.model.User;
+    const requestUser = await User.find({ nickname: userInfo.nickname });
+    // 用户未登陆，将好友请求保存
+    if (!requestUser.loginStatus) {
+      await User.updateOne(
+        { _id: currentUser.id },
+        {
+          $set: { requestFriends: requestUser.id },
+        });
+    }
   }
 }
 module.exports = UserService;

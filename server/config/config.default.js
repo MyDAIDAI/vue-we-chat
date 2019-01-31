@@ -6,7 +6,7 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1533450168502_326';
 
-  config.cert = 'vue_we_chat_by_dengpan_1533450168502_326'
+  config.cert = 'vue_we_chat_by_dengpan_1533450168502_326';
 
   // add your config here
   config.middleware = [];
@@ -22,8 +22,8 @@ module.exports = appInfo => {
   };
 
   config.cors = {
-    credentials: true
-  }
+    credentials: true,
+  };
 
   config.mongoose = {
     url: 'mongodb://127.0.0.1/vue-we-chat',

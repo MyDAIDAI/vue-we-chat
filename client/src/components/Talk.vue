@@ -78,19 +78,6 @@ export default {
   },
   created () {
   },
-  mounted () {
-    this.$socket.emit('connect', '')
-    this.$socket.emit('server', { fuck: 'u' })
-  },
-  sockets: {
-    connect () { // 这里是监听connect事件
-      this.socketId = this.$socket.id
-      console.log('socketId', this.socketId)
-    },
-    res (val) {
-      console.log('res', val)
-    }
-  },
   methods: {
   }
 }
