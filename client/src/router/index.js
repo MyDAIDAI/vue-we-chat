@@ -21,7 +21,7 @@ export default new Router({
           name: 'talk',
           component: Talk,
           meta: {
-            requireAuth: false
+            requireAuth: true
           }
         },
         {
@@ -29,7 +29,7 @@ export default new Router({
           name: 'public',
           component: Public,
           meta: {
-            requireAuth: false
+            requireAuth: true
           }
         },
         {
@@ -37,7 +37,7 @@ export default new Router({
           name: 'contact',
           component: Contact,
           meta: {
-            requireAuth: false
+            requireAuth: true
           }
         }
       ]

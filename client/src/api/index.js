@@ -12,13 +12,11 @@ function checkStatus ([status, statusText, data]) {
     return data
   }
   if (status === 401) {
-    if (data.message === 'token expired' || data.message === 'invalid token') {
-      store.commit('DELETE_TOKEN')
-    }
+    store.commit('DELETE_TOKEN')
   }
   const error = new Error(statusText)
   error.status = status
-  error.error_message = data
+  error.errorMessage = data
   return Promise.reject(error)
 }
 
