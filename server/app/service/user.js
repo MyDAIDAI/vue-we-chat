@@ -5,8 +5,8 @@ const Service = require('egg').Service;
 class UserService extends Service {
   /**
    * 创建用户
-   * @param userInfo
-   * @returns {Promise<*>}
+   * @param {object} userInfo 创建用户细腻些
+   * @return {Promise<*>} 创建用户结果
    */
   async create(userInfo) {
     const { ctx } = this;
@@ -26,21 +26,21 @@ class UserService extends Service {
       retData = {
         user: userRegister,
         msg: '注册成功',
-        code: 200
+        code: 200,
       };
     } else {
       retData = {
         msg: '该用户已注册，请登录',
-        code: 401
+        code: 401,
       };
     }
     return retData;
   }
 
   /**
-   * 用户登录
-   * @param userInfo
-   * @returns {Promise<{code: number, msg: string}|{code: number, msg: string}|{msg: string, code: number, user: {uid: *, nickname: *, userEmail: string|*|userEmail}, token: *}>}
+   * 用户登陆
+   * @param {object} userInfo 登陆用户信息
+   * @return {Promise<void>} 登陆结果
    */
   async login(userInfo) {
     const { ctx, app } = this;
@@ -53,58 +53,60 @@ class UserService extends Service {
       if (password === userLogin.password) {
         const token = jwt.sign({
           uid: userLogin._id,
-          exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 * 7 // 过期时间为7天
+          exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 * 7, // 过期时间为7天
         }, app.config.cert);
         retData = {
           msg: '登录成功',
           code: 200,
           user: userLogin,
-          token
-        }
+          token,
+        };
       } else {
         retData = {
           code: 401,
-          msg: '密码输入错误，请重新输入!'
-        }
+          msg: '密码输入错误，请重新输入!',
+        };
       }
     } else {
       retData = {
         code: 401,
-        msg: '该用户不存在, 请注册!'
-      }
+        msg: '该用户不存在, 请注册!',
+      };
     }
-    return retData
+    return retData;
   }
 
   /**
    * 获取用户信息
-   * @param userId
-   * @returns {Promise<{code: number, data: *}>}
+   * @param {number} userId  用户id
+   * @return {Promise<{code: number, data: *}>} 用户信息
    */
   async getUserInfo(userId) {
     const { ctx } = this;
     const User = ctx.model.User;
-    let sendDataFormat = {nickname: 1, userEmail: 1, _id: 1, avatar: 1, friends: 1, updateTime: 1}
-    const userInfo = await User.findOne({ _id: userId }, sendDataFormat)
+    const sendDataFormat = { nickname: 1, userEmail: 1, _id: 1, avatar: 1, friends: 1, updateTime: 1 };
+    const userInfo = await User.findOne({ _id: userId }, sendDataFormat);
     return {
       code: 200,
-      data: userInfo
-    }
+      data: userInfo,
+    };
   }
-
   /**
    * 查找用户
-   * @param name
-   * @returns {Promise<void>}
+   * @param {string} name 查找用户名
+   * @return {Promise<{code: number, data: {type: string, value: *}[]}>} 查找用户结果
    */
   async find(name) {
-    let { ctx } = this;
-    let User = ctx.model.User;
-    let sendDataFormat = {nickname: 1, userEmail: 1, _id: 1, avatar: 1}
-    let results = await User.find({nickname: name}, sendDataFormat);
+    const { ctx } = this;
+    const User = ctx.model.User;
+    const sendDataFormat = { nickname: 1, userEmail: 1, _id: 1, avatar: 1 };
+    const results = await User.find({ nickname: name }, sendDataFormat);
     return {
       code: 200,
-      data: results
+      data: [{
+        type: '用户',
+        value: results,
+      }],
     };
   }
 }

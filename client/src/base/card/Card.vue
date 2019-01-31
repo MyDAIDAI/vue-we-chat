@@ -14,8 +14,8 @@
       <div class="search-list" v-if="searchResult.length > 0">
         <div class="list-wrapper">
           <div class="list-content" v-for="(list, index) in searchResult" :key="index">
-            <p>{{list.type}}</p>
-            <div class="item" v-for="(item, i) in list.value" :key="i">
+            <p class="list-title">{{ list.value.length > 0 ? list.type : '没有数据' }}</p>
+            <div class="item" v-for="(item, i) in list.value" :key="i" @click="clickUserHandler(item, 'add')">
               <div class="avatar">
                 <img :src="item.avatar"/>
               </div>
@@ -76,7 +76,12 @@ export default {
       this.$emit('go', page)
     //  todo 点击样式高亮
     },
-    searchInput () {}
+    searchInput () {
+      this.$emit('input', event.target.value)
+    },
+    clickUserHandler (data, type) {
+      this.$emit('click', data, type)
+    }
   }
 }
 </script>
@@ -160,6 +165,11 @@ export default {
         outline: none;
         .list-wrapper {
           overflow: hidden;
+          .list-title {
+            padding: 6px 9px;
+            font-size: 12px;
+            color: #fff;
+          }
           .list-content {
             .item {
               overflow: hidden;

@@ -1,11 +1,11 @@
-'use strict'
+'use strict';
 
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 module.exports = () => {
   return function* (next) {
     const cert = this.app.config.cert;
-    const authorization = this.get('Authorization')
+    const authorization = this.get('Authorization');
     if (authorization === '') {
       this.throw(401, 'no token');
     }
