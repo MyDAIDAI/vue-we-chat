@@ -9,7 +9,9 @@ module.exports = app => {
   router.post('register', '/api/register', controller.user.create);
   router.post('login', '/api/login', controller.user.login);
   router.get('getuserinfo', '/api/getuserinfo', verifyToken, controller.user.getUserInfo);
-  router.get('findUsers', '/api/user/find/:name', verifyToken, controller.user.find);
+  router.get('findUsers', '/api/user/find/:name', verifyToken, controller.user.findUsers);
   router.post('requestUsers', '/api/user/request', controller.user.requestFriend);
-  io.route('server', io.controller.user.index);
+  app.io.of('/').route('request', app.io.controller.user.request);
+  // io.route('server', io.controller.user.index);
+  // io.route('request', io.controller.user.request);
 };
