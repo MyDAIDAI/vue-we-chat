@@ -26,7 +26,7 @@
 import Card from '@/base/card/Card'
 import List from '@/base/list/List'
 import UserApi from '@/api/user/index'
-import { avatar, ERR_OK } from '@/common/js/config'
+import { avatar } from '@/common/js/config'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
@@ -172,6 +172,10 @@ export default {
         })
     },
     findUserList (value) {
+      if (!value) {
+        this.searchResult = []
+        return
+      }
       UserApi.find(value)
         .then(res => {
           if (res.success) {

@@ -13,7 +13,7 @@
 import Login from '@/base/login/Login'
 import Register from '@/base/register/Register'
 import UserApi from '@/api/user/index'
-import { ERR_OK } from '@/common/js/config'
+// import { ERR_OK } from '@/common/js/config'
 import { mapMutations } from 'vuex'
 
 export default {

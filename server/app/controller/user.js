@@ -87,9 +87,12 @@ class UserController extends Controller {
     if (findUsers) {
       retData = {
         code: 200,
-        data: {
-          user: findUsers,
-        },
+        data: [
+          {
+            type: '用户',
+            value: findUsers,
+          },
+        ],
       };
     }
     resHandle(ctx, retData);
