@@ -33,22 +33,24 @@ export default {
     registerHandler (data) {
       UserApi.register(data)
         .then(res => {
-          if (res.data.code === ERR_OK) {
-            this.messageTipHandler(res.data.msg, 'success')
+          console.log('register', res)
+          if (res.success) {
+            let type = res.msg.indexOf('成功') > -1 ? 'success' : 'info'
+            this.messageTipHandler(res.msg, type)
           }
         }).catch(err => {
-          this.messageTipHandler(err.errorMessage.message, 'error')
+          this.messageTipHandler(err.errorMessage && err.errorMessage.message, 'error')
         })
     },
     loginHandler (data) {
       UserApi.login(data)
         .then(res => {
-          if (res.data.code === ERR_OK) {
-            if (res.data.msg === '登录成功') {
+          if (res.success) {
+            if (res.msg === '登录成功') {
               this.createToken(res.data.token)
               this.$router.push('/talk')
             } else {
-              this.messageTipHandler(res.data.msg, 'error')
+              this.messageTipHandler(res.msg, 'error')
             }
           }
         }).catch(err => {

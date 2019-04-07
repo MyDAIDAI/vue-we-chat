@@ -20,6 +20,7 @@ const actions = {
 
 const mutations = {
   [types.SET_USER] (state, userinfo) {
+    console.log('userinfo', userinfo)
     state.userEmail = userinfo.userEmail
     state.nickname = userinfo.nickname
     state.avatar = userinfo.avatar

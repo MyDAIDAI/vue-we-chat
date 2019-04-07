@@ -13,6 +13,7 @@
 - 调试 
   - `npm run debug`
   - 浏览器在控制台打开`DevTools`地址，在`sources`中找到文件，打断点进行调试
+  - `node@10`以上的版本运行时会报`ERROR 16205 nodejs.TypeError: Cannot set property 'parsingHeadersStart' of undefined (uncaughtException throw 2 times on pid:16205)`错误，解决办法，切换`node`版本为`8.15.0`
 
 ## mongodb
 - 开启`mongodb`服务 `sudo mongod`

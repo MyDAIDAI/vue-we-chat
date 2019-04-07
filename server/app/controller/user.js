@@ -13,7 +13,7 @@ class UserController extends Controller {
     let retData = {};
     if (findUser) {
       retData = {
-        code: 401,
+        code: 200,
         msg: '用户已存在，请登陆',
       };
     } else {

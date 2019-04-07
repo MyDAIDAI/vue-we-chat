@@ -166,16 +166,16 @@ export default {
     getUserInfo () {
       UserApi.getUserInfo()
         .then(res => {
-          if (res.data.code === ERR_OK) {
-            this.setUserInfo(res.data.data)
+          if (res.success) {
+            this.setUserInfo(res.data.user)
           }
         })
     },
     findUserList (value) {
       UserApi.find(value)
         .then(res => {
-          if (res.data.code === ERR_OK) {
-            this.searchResult = res.data.data
+          if (res.success) {
+            this.searchResult = res.data
           }
         })
     },
