@@ -44,6 +44,10 @@ class UserService extends Service {
     }
     return NOT_FIND;
   }
+  async updateOneUserInfo(userEmail, updatedData) {
+    const { ctx } = this
+    return await  ctx.model.User.updateOne({userEmail}, updatedData)
+  }
   /**
    * 创建用户
    * @param {object} userInfo 创建用户细腻些

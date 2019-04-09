@@ -36,6 +36,7 @@ class UserController extends Controller {
           uid: userLogin._id,
           exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 * 7, // 过期时间为7天
         }, app.config.cert);
+        await service.user.updateOneUserInfo(userLogin.userEmail, {loginStatus: true})
         retData = {
           msg: '登录成功',
           code: 200,
@@ -44,6 +45,7 @@ class UserController extends Controller {
             token,
           },
         };
+        userLogin.loginStatus = true
       } else {
         retData = {
           code: 401,
@@ -96,6 +98,20 @@ class UserController extends Controller {
       };
     }
     resHandle(ctx, retData);
+  }
+  async addUser () {
+    const { ctx, service } = this;
+    const nickname = ctx.params.nickname
+    const userId = ctx.token.uid;
+    const findUser = await service.user.findOneByUserId(userId);
+    let friends = findUser.friends
+    const addUser = await service.user.findUsersByNickname(nickname);
+    if (addUser.loginStatus) {
+      // TODO 用户处于登录状态，则直接将请求信息通过websocket发送
+    } else {
+      friends.push(addUser._id)
+      await service.user.updateOneUserInfo(findUser.userEmail, {friends})
+    }
   }
   // async requestFriend() {
   //   const { ctx, service, app } = this;
