@@ -9,10 +9,14 @@ class UserController extends Controller {
   }
   async request() {
     const { ctx, service } = this;
-    const requestUser = ctx.args[0];
-    const currentUser = ctx.args[1];
-    const res = await service.user.requestFriend(requestUser, currentUser);
-    await ctx.socket.emit('res', res);
+    // const requestUser = ctx.args[0];
+    // const currentUser = ctx.args[1];
+    // const res = await service.user.requestFriend(requestUser, currentUser);
+    await ctx.socket.emit('res', 'ctx data');
+  }
+  async friends () {
+    const { ctx, service } = this
+    await ctx.socket.emit('addfriends', 'add friends socket')
   }
 }
 module.exports = UserController;

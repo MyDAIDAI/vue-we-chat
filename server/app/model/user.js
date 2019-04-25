@@ -18,9 +18,6 @@ module.exports = app => {
       type: Boolean,
       default: false
     },
-    requestFriends: {
-      type: Array
-    },
     createTime: {
       type: Date,
       default: Date.now(),

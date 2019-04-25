@@ -56,8 +56,7 @@ class UserService extends Service {
   async createUser(userInfo) {
     const { ctx } = this;
     const User = ctx.model.User;
-    const { nickname, userEmail, password } = userInfo;
-    const userObj = new User({ nickname, userEmail, password });
+    const userObj = new User(userInfo);
     await userObj.save();
     return '注册成功';
   }

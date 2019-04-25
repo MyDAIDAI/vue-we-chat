@@ -178,6 +178,9 @@ export default {
               cursor: pointer;
               border-bottom: 1px solid #33363b;
               background-color: #393c43;
+              &:hover {
+                background: #26292e;
+              }
               .avatar {
                 float: left;
                 margin-right: 10px;

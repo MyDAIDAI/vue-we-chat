@@ -2,7 +2,7 @@
   <div class="layout">
     <div class="content-wrapper">
       <div class="panel">
-        <card @go="goPage" :user="userInfo" :searchResult="searchResult" @input="findUserList"></card>
+        <card @go="goPage" :user="userInfo" :searchResult="searchResult" @input="findUserList" @click="searchListClick"></card>
         <list :lists="listData" :type="listType"></list>
       </div>
       <div class="box">
@@ -19,6 +19,26 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      :title="dialog.title"
+      :visible.sync="dialog.visible"
+      @close="dialogCloseHandler"
+      width="30%">
+      <p>添加
+        <span style="font-weight: bolder; font-size: 18px;">{{clickUserData.nickname}}</span>
+        为好友
+      </p>
+      <el-input
+        type="textarea"
+        :rows="2"
+        placeholder="请输入内容"
+        v-model="dialog.content">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialog.visible = false">取 消</el-button>
+        <el-button type="primary" @click="sendAddFriendHandler">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -47,6 +67,12 @@ export default {
         nickname: '',
         userEmail: '',
         avatar: ''
+      },
+      dialog: {
+        title: '',
+        visible: false,
+        type: '',
+        content: ''
       },
       chatList: [
         {
@@ -139,7 +165,9 @@ export default {
       ],
       listData: [],
       preEditable: false,
-      searchResult: []
+      searchResult: [],
+      selectUser: '',
+      clickUserData: ''
     }
   },
   created () {
@@ -151,13 +179,13 @@ export default {
       this.socketId = this.$socket.id
       console.log('connect server: socketId', this.socketId)
     },
-    res (val) {
+    addfriends (val) {
       console.log('client receive messgae : ', val)
     }
   },
   mounted () {
     // 往服务端发送消息
-    this.$socket.emit('server', {nickname: '111'})
+    this.$socket.emit('friends')
   },
   methods: {
     goPage (page) {
@@ -183,6 +211,30 @@ export default {
           }
         })
     },
+    searchListClick (data, type) {
+      this.clickUserData = data
+      this.dialog.type = type
+      this.dialog.title = type === 'add' ? '请填写验证信息' : ''
+      this.dialog.visible = true
+      this.dialog.content = ''
+    },
+    dialogCloseHandler () {
+      this.clickUserData = ''
+      this.dialog.content = ''
+    },
+    sendAddFriendHandler () {
+      this.dialog.visible = false
+      UserApi.addUser(this.clickUserData._id, {
+        message: this.dialog.content
+      }).then(res => {
+          if (res.success) {
+            this.$message({
+              type: 'success',
+              message: res.msg
+            })
+          }
+        })
+    },
     ...mapMutations({
       setUserInfo: 'SET_USER'
     })
@@ -191,6 +243,13 @@ export default {
 </script>
 
 <style scoped lang="scss" rel="stylesheet/scss">
+  .el-button--primary {
+    background: #3daf35;
+    border-color: #3daf35;
+  }
+  .el-dialog__body {
+    padding-top: 20px !important;
+  }
   .layout {
     height: 80%;
     min-height: 600px;

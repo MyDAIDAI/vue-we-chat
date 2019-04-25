@@ -180,6 +180,9 @@ export default {
       border-bottom: 1px solid #292c33;
       cursor: pointer;
       position: relative;
+      &:hover {
+        background: #26292e;
+      }
       .avatar {
         float: left;
         margin-right: 10px;
