@@ -19,7 +19,7 @@ module.exports = app => {
     message: {
       type: String
     },
-    know: {
+    read: {
       type: Boolean,
       default: false
     }

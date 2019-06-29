@@ -14,14 +14,18 @@ class RequestController extends Controller {
     // 当前用户
     const findUser = await service.user.findOneByUserId(userId);
     // 添加用户
+    console.log('findUser', findUser)
     const addUser = await service.user.findOneByUserId(id);
     let retData = {}
-    // if (addUser.loginStatus) {
-    //   // TODO 用户处于登录状态，则直接将请求信息通过websocket发送
-    // } else {
-    //   await service.request.createAddRequest({ addUser: addUser._id, requestUser: findUser._id, message });
-    // }
-    nsp.emit('request', 'add friends' + addUser);
+    if (addUser.loginStatus) {
+      nsp.to(addUser.socketId).emit('addfriend', {
+        message,
+        nickname: findUser.nickname,
+      })
+      // TODO 用户处于登录状态，则直接将请求信息通过websocket发送
+    } else {
+      await service.request.createAddRequest({ addUser: addUser._id, requestUser: findUser._id, message });
+    }
     // await ctx.socket.emit('request', ' add friends' + addUser);
     retData = {
       code: 200,

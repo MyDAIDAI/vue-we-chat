@@ -181,6 +181,13 @@ export default {
     },
     login (val) {
       console.log('client receive messgae : login:  ', val)
+    },
+    addfriend (val) {
+      console.log('client revice add friend request', val)
+      this.$confirm(`${val.nickname} 请求加你为好友，验证信息：${val.message}`, '添加好友请求', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {})
     }
   },
   mounted () {
