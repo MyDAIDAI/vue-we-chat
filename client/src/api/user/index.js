@@ -18,5 +18,8 @@ export default {
   },
   addUser (id, data) {
     return api.post(`/api/request/add/${id}`, data)
+  },
+  addFriend (friendId) {
+    return api.post(`/api/friend/add/${friendId}`)
   }
 }

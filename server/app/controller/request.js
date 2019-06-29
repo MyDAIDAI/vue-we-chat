@@ -21,6 +21,7 @@ class RequestController extends Controller {
       nsp.to(addUser.socketId).emit('addfriend', {
         message,
         nickname: findUser.nickname,
+        userId: findUser._id
       })
       // TODO 用户处于登录状态，则直接将请求信息通过websocket发送
     } else {

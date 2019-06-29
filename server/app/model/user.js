@@ -5,6 +5,7 @@ module.exports = app => {
 
   const UserSchema = new Schema({
     nickname: { type: String },
+    // 用户邮箱唯一
     userEmail: { type: String },
     password: { type: String },
     socketId: {

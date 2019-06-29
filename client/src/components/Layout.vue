@@ -187,7 +187,14 @@ export default {
       this.$confirm(`${val.nickname} 请求加你为好友，验证信息：${val.message}`, '添加好友请求', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
-      }).then(() => {})
+      }).then(() => {
+        UserApi.addFriend(val.userId).then(res => {
+           this.$message({
+            message: '好友添加成功',
+            type: 'success'
+          })
+        })
+      })
     }
   },
   mounted () {
