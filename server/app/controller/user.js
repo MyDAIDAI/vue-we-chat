@@ -60,18 +60,6 @@ class UserController extends Controller {
     }
     resHandle(ctx, retData);
   }
-  async setSocketId() {
-    const { ctx, service } = this;
-    const userId = ctx.token.uid;
-    const user = await service.user.findOneByUserId(userId);
-    await service.user.updateOneUserInfo(user.userEmail, { socketId: ctx.socket.id });
-    resHandle(ctx, {
-      code: 200,
-      data: {
-        msg: 'socket id set success' + ctx.socket.id,
-      },
-    });
-  }
   async getUserInfo() {
     const { ctx, service } = this;
     const userId = ctx.token.uid;

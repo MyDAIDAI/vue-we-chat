@@ -184,18 +184,10 @@ export default {
     }
   },
   mounted () {
-    this.setSocketId()
-    // 往服务端发送消息
   },
   methods: {
     goPage (page) {
       this.$emit('go', page)
-    },
-    setSocketId () {
-      UserApi.setSocketId()
-        .then(res => {
-          console.log(res)
-        })
     },
     getUserInfo () {
       UserApi.getUserInfo()
