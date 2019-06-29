@@ -48,6 +48,14 @@ class UserService extends Service {
     const { ctx } = this
     return await  ctx.model.User.updateOne({userEmail}, updatedData)
   }
+  async findAllUsersById (ids, sendDataFormat = {}) {
+    const { ctx } = this;
+    const users = await ctx.model.User.find({_id: {$in: ids}}, sendDataFormat);
+    if (users) {
+      return users;
+    }
+    return NOT_FIND;
+  }
   /**
    * 创建用户
    * @param {object} userInfo 创建用户细腻些

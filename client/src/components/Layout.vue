@@ -74,24 +74,6 @@ export default {
         type: '',
         content: ''
       },
-      chatList: [
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        }
-      ],
       listType: 'chat',
       contactList: [
         {
@@ -171,7 +153,6 @@ export default {
     }
   },
   created () {
-    this.listData = this.chatList
     this.getUserInfo()
   },
   sockets: {
@@ -189,12 +170,16 @@ export default {
         cancelButtonText: '取消'
       }).then(() => {
         UserApi.addFriend(val.userId).then(res => {
-           this.$message({
+          this.$message({
             message: '好友添加成功',
             type: 'success'
           })
         })
       })
+    },
+    friends (data) {
+      this.listData = data
+      console.log('friends list', data)
     }
   },
   mounted () {
@@ -208,6 +193,7 @@ export default {
         .then(res => {
           if (res.success) {
             this.setUserInfo(res.data.user)
+            this.listData = res.data.user.friends
             this.$socket.emit('login', res.data.user)
           }
         })

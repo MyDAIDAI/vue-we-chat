@@ -64,10 +64,13 @@ class UserController extends Controller {
     const { ctx, service } = this;
     const userId = ctx.token.uid;
     const findUser = await service.user.findOneByUserId(userId);
+    const friends = await service.user.findAllUsersById(findUser.friends)
     let retData = {
       code: 401,
       msg: '该用户不存在!',
     };
+    delete findUser.friends
+    findUser.friends = friends
     if (findUser) {
       retData = {
         code: 200,

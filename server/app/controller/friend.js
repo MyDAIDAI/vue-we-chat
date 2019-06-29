@@ -5,6 +5,7 @@ const Controller = require('egg').Controller;
 class FriendController extends Controller {
   async addFriend() {
     const { ctx, service, app } = this;
+    const nsp = app.io.of('/');
     const friendId = ctx.params.friendId
     const userId = ctx.token.uid;
     // 当前用户
@@ -13,14 +14,19 @@ class FriendController extends Controller {
     const addUser = await service.user.findOneByUserId(friendId)
     // 添加
     let retData = {};
-    let currentUserFriends = currentUser.friends;
-    let addUserFriends = addUser.friends;
-    addUserFriends.push(userId)
-    currentUserFriends.push(friendId);
-    addUserFriends = Array.from(new Set(addUserFriends))
-    currentUserFriends = Array.from(new Set(currentUserFriends))
-    await service.user.updateOneUserInfo(addUser.userEmail, { friends: addUserFriends});
-    await service.user.updateOneUserInfo(currentUser.userEmail, { friends: currentUserFriends });
+    let currentUserFriendIds = currentUser.friends;
+    let addUserFriendIds = addUser.friends;
+    addUserFriendIds.push(userId)
+    currentUserFriendIds.push(friendId);
+    addUserFriendIds = Array.from(new Set(addUserFriendIds))
+    currentUserFriendIds = Array.from(new Set(currentUserFriendIds))
+    await service.user.updateOneUserInfo(addUser.userEmail, { friends: addUserFriendIds});
+    await service.user.updateOneUserInfo(currentUser.userEmail, { friends: currentUserFriendIds });
+
+    let currentUserFriends = await service.user.findAllUsersById(currentUserFriendIds)
+    let addUserFriends = await service.user.findAllUsersById(addUserFriendIds)
+    nsp.to(currentUser.socketId).emit('friends', currentUserFriends)
+    nsp.to(addUser.socketId).emit('friends', addUserFriends)
     retData = {
       code: 200,
       msg: '好友已添加',
