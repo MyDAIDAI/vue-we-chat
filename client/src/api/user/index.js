@@ -7,6 +7,9 @@ export default {
   login (data) {
     return api.post(`/api/login`, data)
   },
+  setSocketId () {
+    return api.post('/api/set/socketId')
+  },
   getUserInfo () {
     return api.get('/api/user/info')
   },

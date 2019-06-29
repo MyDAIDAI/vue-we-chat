@@ -2,7 +2,8 @@ import * as types from '../mutation_types'
 const state = {
   userEmail: '',
   nickname: '',
-  avatar: ''
+  avatar: '',
+  id: ''
 }
 
 const getters = {
@@ -10,7 +11,8 @@ const getters = {
     return {
       nickname: state.nickname,
       userEmail: state.userEmail,
-      avatar: state.avatar
+      avatar: state.avatar,
+      id: state.id
     }
   }
 }
@@ -20,10 +22,10 @@ const actions = {
 
 const mutations = {
   [types.SET_USER] (state, userinfo) {
-    console.log('userinfo', userinfo)
     state.userEmail = userinfo.userEmail
     state.nickname = userinfo.nickname
     state.avatar = userinfo.avatar
+    state.id = userinfo._id
   }
 }
 

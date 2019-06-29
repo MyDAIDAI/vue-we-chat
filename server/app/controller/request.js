@@ -5,8 +5,9 @@ const jwt = require('jsonwebtoken');
 // const ms = require('ms');
 
 class RequestController extends Controller {
-  async addUser () {
-    const { ctx, service } = this;
+  async addUser() {
+    const { ctx, service, app } = this;
+    const nsp = app.io.of('/');
     const id = ctx.params.id
     const userId = ctx.token.uid;
     const { message } = ctx.request.body;
@@ -15,16 +16,18 @@ class RequestController extends Controller {
     // 添加用户
     const addUser = await service.user.findOneByUserId(id);
     let retData = {}
-    if (addUser.loginStatus) {
-      // TODO 用户处于登录状态，则直接将请求信息通过websocket发送
-    } else {
-      await service.request.createAddRequest({addUser: addUser._id, requestUser: findUser._id, message})
-      retData = {
-        code: 200,
-        msg: '添加好友请求已发送，等待用户同意'
-      }
-      resHandle(ctx, retData);
+    // if (addUser.loginStatus) {
+    //   // TODO 用户处于登录状态，则直接将请求信息通过websocket发送
+    // } else {
+    //   await service.request.createAddRequest({ addUser: addUser._id, requestUser: findUser._id, message });
+    // }
+    nsp.emit('request', 'add friends' + addUser);
+    // await ctx.socket.emit('request', ' add friends' + addUser);
+    retData = {
+      code: 200,
+      msg: '添加好友请求已发送，等待用户同意',
     }
+    resHandle(ctx, retData);
   }
 }
 function resHandle(ctx, res) {

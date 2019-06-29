@@ -175,27 +175,34 @@ export default {
     this.getUserInfo()
   },
   sockets: {
-    connect () { // 这里是监听connect事件
+    connect (data) { // 这里是监听connect事件
       this.socketId = this.$socket.id
       console.log('connect server: socketId', this.socketId)
     },
-    addfriends (val) {
-      console.log('client receive messgae : ', val)
+    login (val) {
+      console.log('client receive messgae : login:  ', val)
     }
   },
   mounted () {
+    this.setSocketId()
     // 往服务端发送消息
-    this.$socket.emit('friends')
   },
   methods: {
     goPage (page) {
       this.$emit('go', page)
+    },
+    setSocketId () {
+      UserApi.setSocketId()
+        .then(res => {
+          console.log(res)
+        })
     },
     getUserInfo () {
       UserApi.getUserInfo()
         .then(res => {
           if (res.success) {
             this.setUserInfo(res.data.user)
+            this.$socket.emit('login', res.data.user)
           }
         })
     },
@@ -227,13 +234,13 @@ export default {
       UserApi.addUser(this.clickUserData._id, {
         message: this.dialog.content
       }).then(res => {
-          if (res.success) {
-            this.$message({
-              type: 'success',
-              message: res.msg
-            })
-          }
-        })
+        if (res.success) {
+          this.$message({
+            type: 'success',
+            message: res.msg
+          })
+        }
+      })
     },
     ...mapMutations({
       setUserInfo: 'SET_USER'

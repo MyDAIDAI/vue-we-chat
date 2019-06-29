@@ -7,6 +7,10 @@ module.exports = app => {
     nickname: { type: String },
     userEmail: { type: String },
     password: { type: String },
+    socketId: {
+      type: String,
+      default: '',
+    },
     avatar: {
       type: String,
       default: 'http://bpic.588ku.com/element_origin_min_pic/17/06/23/f21e1f3b279c62d6f3469ca6c84e638f.jpg'

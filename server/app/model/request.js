@@ -13,11 +13,15 @@ module.exports = app => {
       default: Date.now(),
     },
     status: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: 0
     },
     message: {
       type: String
+    },
+    know: {
+      type: Boolean,
+      default: false
     }
   });
 

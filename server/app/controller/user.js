@@ -36,7 +36,7 @@ class UserController extends Controller {
           uid: userLogin._id,
           exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 * 7, // 过期时间为7天
         }, app.config.cert);
-        await service.user.updateOneUserInfo(userLogin.userEmail, {loginStatus: true})
+        await service.user.updateOneUserInfo(userLogin.userEmail, { loginStatus: true })
         retData = {
           msg: '登录成功',
           code: 200,
@@ -45,7 +45,7 @@ class UserController extends Controller {
             token,
           },
         };
-        userLogin.loginStatus = true
+        userLogin.loginStatus = true;
       } else {
         retData = {
           code: 401,
@@ -59,6 +59,18 @@ class UserController extends Controller {
       };
     }
     resHandle(ctx, retData);
+  }
+  async setSocketId() {
+    const { ctx, service } = this;
+    const userId = ctx.token.uid;
+    const user = await service.user.findOneByUserId(userId);
+    await service.user.updateOneUserInfo(user.userEmail, { socketId: ctx.socket.id });
+    resHandle(ctx, {
+      code: 200,
+      data: {
+        msg: 'socket id set success' + ctx.socket.id,
+      },
+    });
   }
   async getUserInfo() {
     const { ctx, service } = this;
