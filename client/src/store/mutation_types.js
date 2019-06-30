@@ -4,3 +4,6 @@ export const DELETE_TOKEN = 'DELETE_TOKEN'
 // user
 export const SET_USER = 'SET_USER'
 export const DELETE_USER = 'DELETE_USER'
+export const SET_USER_EMAIL = 'SET_USER_EMAIL'
+// chat
+export const SAVE_FRIEND_INFO = 'SAVE_FRIEND_INFO'

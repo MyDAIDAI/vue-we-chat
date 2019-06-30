@@ -3,7 +3,7 @@
     <div class="content-wrapper">
       <div class="panel">
         <card @go="goPage" :user="userInfo" :searchResult="searchResult" @input="findUserList" @click="searchListClick"></card>
-        <list :lists="listData" :type="listType"></list>
+        <list :lists="listData" :type="listType" @click="clickFriendList"></list>
       </div>
       <div class="box">
         <div class="box-header">
@@ -54,12 +54,6 @@ export default {
   components: { Card, List },
   computed: {
     ...mapGetters(['userInfo'])
-  },
-  props: {
-    title: {
-      type: String,
-      default: ''
-    }
   },
   data () {
     return {
@@ -149,7 +143,8 @@ export default {
       preEditable: false,
       searchResult: [],
       selectUser: '',
-      clickUserData: ''
+      clickUserData: '',
+      title: ''
     }
   },
   created () {
@@ -194,6 +189,7 @@ export default {
           if (res.success) {
             this.setUserInfo(res.data.user)
             this.listData = res.data.user.friends
+            this.clickFriendList(this.listData[0])
             this.$socket.emit('login', res.data.user)
           }
         })
@@ -221,6 +217,10 @@ export default {
       this.clickUserData = ''
       this.dialog.content = ''
     },
+    clickFriendList (data) {
+      this.saveFriendInfo(data)
+      this.title = data.nickname
+    },
     sendAddFriendHandler () {
       this.dialog.visible = false
       UserApi.addUser(this.clickUserData._id, {
@@ -235,7 +235,8 @@ export default {
       })
     },
     ...mapMutations({
-      setUserInfo: 'SET_USER'
+      setUserInfo: 'SET_USER',
+      saveFriendInfo: 'SAVE_FRIEND_INFO'
     })
   }
 }

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './modules/user'
 import token from './modules/token'
+import friend from './modules/friend'
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -9,7 +10,8 @@ const debug = process.env.NODE_ENV !== 'production'
 export default new Vuex.Store({
   modules: {
     user,
-    token
+    token,
+    friend
   },
   strict: debug
 })

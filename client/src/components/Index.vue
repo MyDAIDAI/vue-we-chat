@@ -48,6 +48,7 @@ export default {
           if (res.success) {
             if (res.msg === '登录成功') {
               this.createToken(res.data.token)
+              this.setUserEmail(data.userEmail)
               this.$router.push('/talk')
             } else {
               this.messageTipHandler(res.msg, 'error')
@@ -64,7 +65,8 @@ export default {
       })
     },
     ...mapMutations({
-      createToken: 'CREATE_TOKEN'
+      createToken: 'CREATE_TOKEN',
+      setUserEmail: 'SET_USER_EMAIL'
     })
   }
 }

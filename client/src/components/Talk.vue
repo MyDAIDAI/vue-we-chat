@@ -30,55 +30,89 @@
         <i class="file"></i>
       </div>
       <div class="content">
-        <pre class="flex" :contenteditable="preEditable" @click="preEditable = true"></pre>
+        <pre class="flex" :contenteditable="preEditable" @click="preEditable = true" id="sendMessage"></pre>
       </div>
       <div class="action">
         <span class="desc">按下Cmd+Enter换行</span>
-        <a class="btn btn_send" href="javascript:;">发送</a>
+        <a class="btn btn_send" href="javascript:;" @click="sendChatMessage">发送</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { avatar } from '@/common/js/config'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Talk',
   components: {},
+  computed: {
+    ...mapGetters(['friendInfo', 'userInfo'])
+  },
   data () {
     return {
       preEditable: false,
-      chatContent: [
-        {
-          time: '10:06',
-          avatar: avatar,
-          message: 'adsfadfas',
-          isSend: true
-        },
-        {
-          time: '10:06',
-          avatar: avatar,
-          message: 'adsfadfas',
-          isSend: false
-        },
-        {
-          time: '10:06',
-          avatar: avatar,
-          message: 'adsfadfas',
-          isSend: false
-        },
-        {
-          time: '10:06',
-          avatar: avatar,
-          message: 'adsfadfas',
-          isSend: true
-        }
-      ]
+      chatContent: []
     }
   },
   created () {
   },
+  mounted () {
+    this.sendMessageDiv = document.getElementById('sendMessage')
+    console.log('friendInfo', this.friendInfo)
+  },
+  sockets: {
+    chat (msg) {
+       this.chatContent.push({
+        time: new Date(),
+        avatar: this.friendInfo.avatar,
+        message: msg,
+        isSend: false
+       })
+      console.log('socket chat', msg)
+    }
+  },
   methods: {
+    sendChatMessage () {
+      let sendMessage = this.sendMessageDiv.innerHTML
+      document.getElementById('sendMessage').innerHTML = ''
+      this.$socket.emit('chat', {
+        msg: sendMessage,
+        socketId: this.friendInfo.socketId
+      })
+    }
+  },
+  watch: {
+    friendInfo: {
+      handler (data) {
+        this.chatContent = [
+          {
+            time: '10:06',
+            avatar: this.userInfo.avatar,
+            message: 'adsfadfas1',
+            isSend: true
+          },
+          {
+            time: '10:06',
+            avatar: this.friendInfo.avatar,
+            message: 'adsfadfas2',
+            isSend: false
+          },
+          {
+            time: '10:06',
+            avatar: this.friendInfo.avatar,
+            message: 'adsfadfas3',
+            isSend: false
+          },
+          {
+            time: '10:06',
+            avatar: this.userInfo.avatar,
+            message: 'adsfadfas4',
+            isSend: true
+          }
+        ]
+      },
+      deep: true
+    }
   }
 }
 </script>

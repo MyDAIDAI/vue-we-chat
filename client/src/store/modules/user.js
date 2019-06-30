@@ -26,6 +26,9 @@ const mutations = {
     state.nickname = userinfo.nickname
     state.avatar = userinfo.avatar
     state.id = userinfo._id
+  },
+  [types.SET_USER_EMAIL] (data) {
+    state.userEmail = data
   }
 }
 

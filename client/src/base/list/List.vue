@@ -5,14 +5,16 @@
       <p class="ico-loading"></p>
       <div class="chat" v-if="type === 'chat'">
         <div v-if="lists.length > 0">
-          <div class="chat-item" v-for="(ele, index) in lists" :key="index">
-            <div class="avatar">
-              <img :src="ele.avatar" class="img"/>
-            </div>
-            <div class="info">
-              <h3 class="nickname">
-                <span class="nickname-txt">{{ele.nickname}}</span>
-              </h3>
+          <div class="chat-item" v-for="(ele, index) in lists" :key="index" >
+            <div @click="clickFriendHandler(ele)">
+              <div class="avatar">
+                <img :src="ele.avatar" class="img"/>
+              </div>
+              <div class="info">
+                <h3 class="nickname">
+                  <span class="nickname-txt">{{ele.nickname}}</span>
+                </h3>
+              </div>
             </div>
           </div>
         </div>
@@ -158,6 +160,9 @@ export default {
         zoom: this.zoom
       }
       this.scroll = new BScroll(this.$refs.wrapper, options)
+    },
+    clickFriendHandler (data) {
+      this.$emit('click', data)
     }
   }
 }
