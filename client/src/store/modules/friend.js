@@ -5,7 +5,8 @@ const state = {
   nickname: '',
   socketId: '',
   userId: '',
-  avatar: ''
+  avatar: '',
+  loginStatus: false
 }
 
 const getters = {
@@ -14,7 +15,8 @@ const getters = {
       nickname: state.nickname,
       socketId: state.socketId,
       userId: state.userId,
-      avatar: state.avatar
+      avatar: state.avatar,
+      loginStatus: state.loginStatus
     }
   }
 }
@@ -26,6 +28,7 @@ const mutations = {
     state.socketId = data.socketId
     state.userId = data._id
     state.avatar = data.avatar
+    state.loginStatus = state.loginStatus
   }
 }
 

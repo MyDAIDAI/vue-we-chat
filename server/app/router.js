@@ -14,6 +14,10 @@ module.exports = app => {
   router.post('addFriend', '/api/friend/add/:friendId', verifyToken, controller.friend.addFriend)
   // router.post('requestUsers', '/api/user/request', controller.user.requestFriend);
   app.io.of('/').route('login', app.io.controller.login.index);
+  app.io.of('/').route('chat', app.io.controller.chat.index);
+  app.io.route('disconnecting', app.io.controller.chat.disconnecting);
+  app.io.route('disconnect', app.io.controller.chat.disconnect);
+
   // io.route('server', io.controller.user.index);
   // io.route('request', io.controller.user.request);
 };

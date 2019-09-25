@@ -22,7 +22,7 @@ class FriendController extends Controller {
     currentUserFriendIds = Array.from(new Set(currentUserFriendIds))
     await service.user.updateOneUserInfo(addUser.userEmail, { friends: addUserFriendIds});
     await service.user.updateOneUserInfo(currentUser.userEmail, { friends: currentUserFriendIds });
-
+    // 根据ids数组查找数据表中包含在其中数据
     let currentUserFriends = await service.user.findAllUsersById(currentUserFriendIds)
     let addUserFriends = await service.user.findAllUsersById(addUserFriendIds)
     nsp.to(currentUser.socketId).emit('friends', currentUserFriends)

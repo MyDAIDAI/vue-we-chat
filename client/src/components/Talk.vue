@@ -62,12 +62,12 @@ export default {
   },
   sockets: {
     chat (msg) {
-       this.chatContent.push({
+      this.chatContent.push({
         time: new Date(),
         avatar: this.friendInfo.avatar,
         message: msg,
         isSend: false
-       })
+      })
       console.log('socket chat', msg)
     }
   },

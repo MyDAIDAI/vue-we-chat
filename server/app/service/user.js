@@ -46,9 +46,9 @@ class UserService extends Service {
   }
   async updateOneUserInfo(userEmail, updatedData) {
     const { ctx } = this
-    return await  ctx.model.User.updateOne({userEmail}, updatedData)
+    return await ctx.model.User.updateOne({userEmail}, updatedData);
   }
-  async findAllUsersById (ids, sendDataFormat = {}) {
+  async findAllUsersById(ids, sendDataFormat = {}) {
     const { ctx } = this;
     const users = await ctx.model.User.find({_id: {$in: ids}}, sendDataFormat);
     if (users) {
@@ -67,6 +67,17 @@ class UserService extends Service {
     const userObj = new User(userInfo);
     await userObj.save();
     return '注册成功';
+  }
+
+  /**
+   * 用户退出
+   * @returns {Promise<void>}
+   */
+  async logout() {
+    const { ctx } = this;
+    const socketId = ctx.socket.id;
+    await ctx.model.User.updateOne({ socketId }, { loginStatus: false });
+    return '退出登录';
   }
 }
 module.exports = UserService;
