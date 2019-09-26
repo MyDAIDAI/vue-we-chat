@@ -46,11 +46,11 @@ class UserService extends Service {
   }
   async updateOneUserInfo(userEmail, updatedData) {
     const { ctx } = this
-    return await ctx.model.User.updateOne({userEmail}, updatedData);
+    return await ctx.model.User.updateOne({ userEmail }, updatedData);
   }
   async findAllUsersById(ids, sendDataFormat = {}) {
     const { ctx } = this;
-    const users = await ctx.model.User.find({_id: {$in: ids}}, sendDataFormat);
+    const users = await ctx.model.User.find({ _id: { $in: ids } }, sendDataFormat);
     if (users) {
       return users;
     }
