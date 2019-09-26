@@ -41,12 +41,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'Talk',
   components: {},
   computed: {
-    ...mapGetters(['friendInfo', 'userInfo'])
+    ...mapGetters(['friendInfo', 'userInfo', 'friendSockets'])
   },
   data () {
     return {
@@ -58,58 +58,41 @@ export default {
   },
   mounted () {
     this.sendMessageDiv = document.getElementById('sendMessage')
-    console.log('friendInfo', this.friendInfo)
   },
   sockets: {
     chat (msg) {
-      this.chatContent.push({
-        time: new Date(),
-        avatar: this.friendInfo.avatar,
-        message: msg,
-        isSend: false
-      })
-      console.log('socket chat', msg)
+      this.pushChatContentHandler(msg, false)
+    },
+    friendLogin (val) {
+      this.setUserFriend(val)
     }
   },
   methods: {
     sendChatMessage () {
       let sendMessage = this.sendMessageDiv.innerHTML
-      document.getElementById('sendMessage').innerHTML = ''
+      this.sendMessageDiv.innerHTML = ''
+      this.pushChatContentHandler(sendMessage, true)
       this.$socket.emit('chat', {
         msg: sendMessage,
-        socketId: this.friendInfo.socketId
+        socketId: this.friendSockets[this.friendInfo.userId]
       })
-    }
+    },
+    pushChatContentHandler (msg, isSend) {
+      this.chatContent.push({
+        time: new Date(),
+        avatar: isSend ? this.userInfo.avatar : this.friendInfo.avatar,
+        message: msg,
+        isSend: isSend
+      })
+    },
+    ...mapMutations({
+      setUserFriend: 'SET_USER_FRIEND'
+    })
   },
   watch: {
     friendInfo: {
       handler (data) {
-        this.chatContent = [
-          {
-            time: '10:06',
-            avatar: this.userInfo.avatar,
-            message: 'adsfadfas1',
-            isSend: true
-          },
-          {
-            time: '10:06',
-            avatar: this.friendInfo.avatar,
-            message: 'adsfadfas2',
-            isSend: false
-          },
-          {
-            time: '10:06',
-            avatar: this.friendInfo.avatar,
-            message: 'adsfadfas3',
-            isSend: false
-          },
-          {
-            time: '10:06',
-            avatar: this.userInfo.avatar,
-            message: 'adsfadfas4',
-            isSend: true
-          }
-        ]
+        this.chatContent = []
       },
       deep: true
     }

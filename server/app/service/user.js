@@ -76,6 +76,7 @@ class UserService extends Service {
   async logout() {
     const { ctx } = this;
     const socketId = ctx.socket.id;
+    console.log('logout', socketId)
     await ctx.model.User.updateOne({ socketId }, { loginStatus: false });
     return '退出登录';
   }

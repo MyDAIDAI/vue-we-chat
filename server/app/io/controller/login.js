@@ -1,12 +1,14 @@
 const Controller = require('egg').Controller;
 
 class LoginController extends Controller {
-  async index(from, msg) {
+  async index() {
     const { ctx, service } = this;
     const user = ctx.args[0];
     await service.user.updateOneUserInfo(user.userEmail, { socketId: ctx.socket.id, loginStatus: true });
-    console.log('userEmail socket id', user.userEmail, ctx.socket.id)
-    await ctx.socket.emit('login', 'save socketId success');
+    await ctx.socket.broadcast.emit('friendLogin', {
+      userId: user._id,
+      socketId: ctx.socket.id,
+    });
   }
 }
 module.exports = LoginController;

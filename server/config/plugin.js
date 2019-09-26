@@ -14,6 +14,6 @@ exports.io = {
     '/': {
       connectionMiddleware: ['auth'],
       packetMiddleware: [],
-    }
+    },
   }
 };
