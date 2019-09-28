@@ -11,7 +11,7 @@ import VueSocketio from 'vue-socket.io'
 
 Vue.use(ElementUI)
 Vue.use(Vuex)
-Vue.use(VueSocketio, process.env.socketHost)
+Vue.use(VueSocketio, process.env.NODE_ENV === 'development' ? process.env.socketHost : window.config.socketHost)
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
