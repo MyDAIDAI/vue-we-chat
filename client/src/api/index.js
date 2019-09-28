@@ -6,7 +6,7 @@ require('isomorphic-fetch')
 function parseResponse (response) {
   return Promise.all([response.status, response.statusText, response.json()])
 }
-
+console.log('NODE_ENV', process.env.NODE_ENV)
 function checkStatus ([status, statusText, data]) {
   if (status >= 200 && status <= 300) {
     return data
@@ -41,6 +41,7 @@ export default {
       cache: 'default',
       mode: 'cors'
     }
+    url = process.env.NODE_ENV === 'development' ? url : `${process.env.baseUrl}url`
     return fetch(url, init)
       .then(parseResponse)
       .then(checkStatus)
@@ -59,6 +60,7 @@ export default {
       mode: 'cors',
       body: JSON.stringify(param)
     }
+    url = process.env.NODE_ENV === 'development' ? url : `${process.env.baseUrl}url`
     return fetch(url, init)
       .then(parseResponse)
       .then(checkStatus)
