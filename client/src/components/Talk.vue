@@ -76,6 +76,7 @@ export default {
         msg: sendMessage,
         socketId: this.friendSockets[this.friendInfo.userId]
       })
+      console.log('this.friendInfo.userId', this.friendInfo.userId, this.friendSockets)
     },
     pushChatContentHandler (msg, isSend) {
       this.chatContent.push({

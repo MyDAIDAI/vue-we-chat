@@ -16,6 +16,7 @@ class RequestController extends Controller {
     // 添加用户
     console.log('findUser', findUser)
     const addUser = await service.user.findOneByUserId(id);
+    console.log('addUser', addUser)
     let retData = {}
     if (addUser.loginStatus) {
       nsp.to(addUser.socketId).emit('addfriend', {

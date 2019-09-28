@@ -39,6 +39,11 @@ const mutations = {
   },
   [types.SET_USER_FRIEND] (state, data) {
     state.friends[data.userId] = data.socketId
+  },
+  [types.SET_USER_FRIENDS_LIST] (state, data) {
+    data.forEach(ele => {
+      state.friends[ele._id] = ele.socketId
+    })
   }
 }
 

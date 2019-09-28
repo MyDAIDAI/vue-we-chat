@@ -6,5 +6,6 @@ export const SET_USER = 'SET_USER'
 export const DELETE_USER = 'DELETE_USER'
 export const SET_USER_EMAIL = 'SET_USER_EMAIL'
 export const SET_USER_FRIEND = 'SET_USER_FRIEND'
+export const SET_USER_FRIENDS_LIST = 'SET_USER_FRIENDS_LIST'
 // chat
 export const SAVE_FRIEND_INFO = 'SAVE_FRIEND_INFO'

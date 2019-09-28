@@ -33,7 +33,6 @@ export default {
     registerHandler (data) {
       UserApi.register(data)
         .then(res => {
-          console.log('register', res)
           if (res.success) {
             let type = res.msg.indexOf('成功') > -1 ? 'success' : 'info'
             this.messageTipHandler(res.msg, type)

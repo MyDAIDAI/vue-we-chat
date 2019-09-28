@@ -2,7 +2,7 @@
   <div class="layout">
     <div class="content-wrapper">
       <div class="panel">
-        <card @go="goPage" :user="userInfo" :searchResult="searchResult" @input="findUserList" @click="searchListClick"></card>
+        <card @go="goPage" :user="userInfo" :show="showSearchList" :searchResult="searchResult" @input="findUserList" @click="searchListClick"></card>
         <list :lists="listData" :type="listType" @click="clickFriendList"></list>
       </div>
       <div class="box">
@@ -69,82 +69,14 @@ export default {
         content: ''
       },
       listType: 'chat',
-      contactList: [
-        {
-          letter: 'A',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'B',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'C',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'D',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        }
-      ],
+      contactList: [],
       listData: [],
       preEditable: false,
       searchResult: [],
       selectUser: '',
       clickUserData: '',
-      title: ''
+      title: '',
+      showSearchList: false
     }
   },
   created () {
@@ -173,8 +105,9 @@ export default {
       })
     },
     friends (data) {
-      this.listData = data
-      console.log('friends list', data)
+      this.listData = JSON.parse(JSON.stringify(data))
+      this.setUserFriendsList(data)
+      this.clickFriendList(this.listData[0])
     }
   },
   mounted () {
@@ -189,8 +122,8 @@ export default {
           if (res.success) {
             this.setUserInfo(res.data.user)
             this.listData = res.data.user.friends
-            this.clickFriendList(this.listData[0])
             this.$socket.emit('login', res.data.user)
+            this.clickFriendList(this.listData[0])
           }
         })
     },
@@ -203,6 +136,7 @@ export default {
         .then(res => {
           if (res.success) {
             this.searchResult = res.data
+            this.showSearchList = true
           }
         })
     },
@@ -218,11 +152,15 @@ export default {
       this.dialog.content = ''
     },
     clickFriendList (data) {
+      if (!data) {
+        return
+      }
       this.saveFriendInfo(data)
       this.title = data.nickname
     },
     sendAddFriendHandler () {
       this.dialog.visible = false
+      this.showSearchList = false
       UserApi.addUser(this.clickUserData._id, {
         message: this.dialog.content
       }).then(res => {
@@ -236,7 +174,8 @@ export default {
     },
     ...mapMutations({
       setUserInfo: 'SET_USER',
-      saveFriendInfo: 'SAVE_FRIEND_INFO'
+      saveFriendInfo: 'SAVE_FRIEND_INFO',
+      setUserFriendsList: 'SET_USER_FRIENDS_LIST'
     })
   }
 }

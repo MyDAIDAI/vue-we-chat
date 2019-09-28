@@ -11,7 +11,7 @@
     <div class="search">
       <i class="search-icon"></i>
       <input @input="searchInput"/>
-      <div class="search-list" v-if="searchResult && searchResult.length > 0">
+      <div class="search-list" v-if="show && searchResult && searchResult.length > 0">
         <div class="list-wrapper">
           <div class="list-content" v-for="(list, index) in searchResult" :key="index">
             <p class="list-title">{{ list.value.length > 0 ? list.type : '没有数据' }}</p>
@@ -61,16 +61,16 @@ export default {
           avatar: ''
         }
       }
-    }
+    },
+    show: Boolean
   },
   data () {
     return {
-      imgUrl: ''
+      imgUrl: '',
     }
   },
   created () {
     this.imgUrl = avatar
-    console.log('searchResult', this.searchResult)
   },
   methods: {
     goPage (page) {

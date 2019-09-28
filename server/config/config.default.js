@@ -29,7 +29,12 @@ module.exports = appInfo => {
 
   config.mongoose = {
     url: 'mongodb://127.0.0.1/vue-we-chat',
-    options: {},
+    options: {
+      server: {
+        auto_reconnect: true,
+        poolSize: 10,
+      },
+    },
   };
 
   return config;
