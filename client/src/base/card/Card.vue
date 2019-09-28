@@ -66,7 +66,7 @@ export default {
   },
   data () {
     return {
-      imgUrl: '',
+      imgUrl: ''
     }
   },
   created () {

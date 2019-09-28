@@ -14,7 +14,7 @@ module.exports = app => {
     },
     avatar: {
       type: String,
-      default: 'http://bpic.588ku.com/element_origin_min_pic/17/06/23/f21e1f3b279c62d6f3469ca6c84e638f.jpg'
+      default: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3986557066,2648426149&fm=26&gp=0.jpg'
     },
     friends: {
       type: Array
