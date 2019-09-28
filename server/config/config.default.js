@@ -36,6 +36,10 @@ module.exports = appInfo => {
       },
     },
   };
-
+  config.alinode = {
+    // 从 `Node.js 性能平台` 获取对应的接入参数
+    appid: appInfo.name + '_1533450168502_326',
+    secret: 'vue_we_chat_by_dengpan_1533450168502_326',
+  };
   return config;
 };
