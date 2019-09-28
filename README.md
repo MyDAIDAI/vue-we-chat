@@ -1,6 +1,13 @@
 # `VUE-WE-CHAT`
 ## 仿微信网页聊天，使用vue框架，websocket实现聊天文件发送等功能，webRTC实现语音视频聊天等功能
 
+## 在线地址
+[仿微信在线聊天](http://enable.dpdaidai.top/#/index)
+- 演示账户
+    - 账号: 3，密码: 3
+    - 账号: 4, 密码: 4
+- 目前只能进行双方同时登陆的聊天操作
+
 ## 前端 client
 - 安装依赖 `npm install`
 - 本地开发 `npm run dev`
