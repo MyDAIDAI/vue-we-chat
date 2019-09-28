@@ -15,5 +15,9 @@ exports.io = {
       connectionMiddleware: ['auth'],
       packetMiddleware: [],
     },
-  }
+  },
+};
+exports.cors = {
+  enable: true,
+  package: 'egg-cors',
 };
