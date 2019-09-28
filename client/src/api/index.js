@@ -40,7 +40,7 @@ export default {
       cache: 'default',
       mode: 'cors'
     }
-    url = process.env.NODE_ENV === 'development' ? url : `${window.config.baseUrl}${url}`
+    url = process.env.NODE_ENV === 'development' ? url : `${process.env.baseUrl}${url}`
     return fetch(url, init)
       .then(parseResponse)
       .then(checkStatus)
@@ -59,7 +59,7 @@ export default {
       mode: 'cors',
       body: JSON.stringify(param)
     }
-    url = process.env.NODE_ENV === 'development' ? url : `${window.config.baseUrl}${url}`
+    url = process.env.NODE_ENV === 'development' ? url : `${process.env.baseUrl}${url}`
     return fetch(url, init)
       .then(parseResponse)
       .then(checkStatus)
