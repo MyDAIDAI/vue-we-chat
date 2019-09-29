@@ -5,18 +5,22 @@ module.exports = app => {
 
   const TalkSchema = new Schema({
     sendId: {
-      type: String
+      type: String,
     },
     receiveId: {
-      type: String
+      type: String,
     },
-    sendStatus: {
+    message: {
+      type: String,
+      default: '',
+    },
+    receiveStatus: {
       type: Number,
-      default: 0
+      default: 0,
     },
     readStatus: {
       type: Number,
-      default: 0
+      default: 0,
     },
     createTime: {
       type: Date,

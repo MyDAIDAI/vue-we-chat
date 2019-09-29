@@ -21,5 +21,8 @@ export default {
   },
   addFriend (friendId) {
     return api.post(`/api/friend/add/${friendId}`)
+  },
+  getAllNotReceiveTalk (id) {
+    return api.get(`/api/talk/all/${id}`)
   }
 }

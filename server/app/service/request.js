@@ -1,6 +1,5 @@
 'use strict';
 const Service = require('egg').Service;
-const NOT_FIND = 0;
 
 class RequestService extends Service {
 	async createAddRequest (requestData) {
@@ -9,13 +8,12 @@ class RequestService extends Service {
 		const requestObj = new Request(requestData);
 		await requestObj.save();
 	}
-	async getAllFriendRequest ({userid}) {
+	async getAllFriendRequest ({ userid }) {
 		const { ctx } = this
 		const result = await ctx.model.request.findAll({
 			addUser: userid,
 			status: 0
 		})
-		console.log('result', result)
 	}
 }
 module.exports = RequestService;

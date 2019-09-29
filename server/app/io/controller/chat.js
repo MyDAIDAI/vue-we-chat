@@ -2,9 +2,13 @@ const Controller = require('egg').Controller;
 
 class ChatController extends Controller {
   async index() {
-    const { ctx } = this;
+    const { ctx, service } = this;
     const data = ctx.args[0];
-    await ctx.socket.to(data.socketId).emit('chat', data.msg);
+    if (data.loginStatus) {
+      await ctx.socket.to(data.socketId).emit('chat', data.msg);
+    } else {
+      await service.talk.createTalkHandler(data);
+    }
   }
   async disconnecting() {
     const { ctx } = this

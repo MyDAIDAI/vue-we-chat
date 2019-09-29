@@ -42,6 +42,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import UserApi from '@/api/user/index'
 export default {
   name: 'Talk',
   components: {},
@@ -57,6 +58,11 @@ export default {
   created () {
   },
   mounted () {
+    // fix: 异步获取用户ID问题，待修复
+    setTimeout(() => {
+      this.getAllNotReceiveTalk()
+      console.log(JSON.stringify(this.$store.state.user.id))
+    }, 1000)
     this.sendMessageDiv = document.getElementById('sendMessage')
   },
   sockets: {
@@ -64,19 +70,33 @@ export default {
       this.pushChatContentHandler(msg, false)
     },
     friendLogin (val) {
+      if (val.userId === this.friendInfo.userId) {
+        this.setFriendLoginStatus(true)
+      }
       this.setUserFriend(val)
     }
   },
   methods: {
+    getAllNotReceiveTalk () {
+      UserApi.getAllNotReceiveTalk(this.$store.state.user.id).then(res => {
+        console.log('talks', res)
+      })
+    },
     sendChatMessage () {
       let sendMessage = this.sendMessageDiv.innerHTML
       this.sendMessageDiv.innerHTML = ''
       this.pushChatContentHandler(sendMessage, true)
-      this.$socket.emit('chat', {
+      let sendObj = this.friendInfo.loginStatus ? {
         msg: sendMessage,
-        socketId: this.friendSockets[this.friendInfo.userId]
-      })
-      console.log('this.friendInfo.userId', this.friendInfo.userId, this.friendSockets)
+        socketId: this.friendSockets[this.friendInfo.userId],
+        loginStatus: true
+      } : {
+        sendId: this.userInfo.id,
+        receiveId: this.friendInfo.id,
+        message: sendMessage,
+        loginStatus: false
+      }
+      this.$socket.emit('chat', sendObj)
     },
     pushChatContentHandler (msg, isSend) {
       this.chatContent.push({
@@ -87,7 +107,8 @@ export default {
       })
     },
     ...mapMutations({
-      setUserFriend: 'SET_USER_FRIEND'
+      setUserFriend: 'SET_USER_FRIEND',
+      setFriendLoginStatus: 'SET_FRIEND_LOGIN_STATUS'
     })
   },
   watch: {
