@@ -2,7 +2,9 @@ import * as types from '../mutation_types'
 const state = {
   userEmail: '',
   nickname: '',
-  avatar: ''
+  avatar: '',
+  id: '',
+  friends: {}
 }
 
 const getters = {
@@ -10,8 +12,12 @@ const getters = {
     return {
       nickname: state.nickname,
       userEmail: state.userEmail,
-      avatar: state.avatar
+      avatar: state.avatar,
+      id: state.id
     }
+  },
+  friendSockets: (state) => {
+    return state.friends
   }
 }
 
@@ -23,6 +29,21 @@ const mutations = {
     state.userEmail = userinfo.userEmail
     state.nickname = userinfo.nickname
     state.avatar = userinfo.avatar
+    state.id = userinfo._id
+    userinfo.friends.forEach(ele => {
+      state.friends[ele._id] = ele.socketId
+    })
+  },
+  [types.SET_USER_EMAIL] (state, data) {
+    state.userEmail = data
+  },
+  [types.SET_USER_FRIEND] (state, data) {
+    state.friends[data.userId] = data.socketId
+  },
+  [types.SET_USER_FRIENDS_LIST] (state, data) {
+    data.forEach(ele => {
+      state.friends[ele._id] = ele.socketId
+    })
   }
 }
 

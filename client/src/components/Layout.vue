@@ -2,6 +2,7 @@
   <div class="layout">
     <div class="content-wrapper">
       <div class="panel">
+<<<<<<< HEAD
         <card
           @go="goPage"
           :user="userInfo"
@@ -9,6 +10,10 @@
           @input="findUserList"
           @click="clickSearchUserItem"></card>
         <list :lists="listData" :type="listType"></list>
+=======
+        <card @go="goPage" :user="userInfo" :show="showSearchList" :searchResult="searchResult" @input="findUserList" @click="searchListClick"></card>
+        <list :lists="listData" :type="listType" @click="clickFriendList"></list>
+>>>>>>> ac2b20c17dd218bf5d923256dc437be6d7923fc7
       </div>
       <div class="box">
         <div class="box-header">
@@ -24,6 +29,26 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      :title="dialog.title"
+      :visible.sync="dialog.visible"
+      @close="dialogCloseHandler"
+      width="30%">
+      <p>添加
+        <span style="font-weight: bolder; font-size: 18px;">{{clickUserData.nickname}}</span>
+        为好友
+      </p>
+      <el-input
+        type="textarea"
+        :rows="2"
+        placeholder="请输入内容"
+        v-model="dialog.content">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialog.visible = false">取 消</el-button>
+        <el-button type="primary" @click="sendAddFriendHandler">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -31,7 +56,10 @@
 import Card from '@/base/card/Card'
 import List from '@/base/list/List'
 import UserApi from '@/api/user/index'
+<<<<<<< HEAD
 import { avatar } from '@/common/js/config'
+=======
+>>>>>>> ac2b20c17dd218bf5d923256dc437be6d7923fc7
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
@@ -40,12 +68,6 @@ export default {
   computed: {
     ...mapGetters(['userInfo'])
   },
-  props: {
-    title: {
-      type: String,
-      default: ''
-    }
-  },
   data () {
     return {
       user: {
@@ -53,114 +75,60 @@ export default {
         userEmail: '',
         avatar: ''
       },
-      chatList: [
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        },
-        {
-          avatar: avatar,
-          nickname: '呆呆'
-        }
-      ],
+      dialog: {
+        title: '',
+        visible: false,
+        type: '',
+        content: ''
+      },
       listType: 'chat',
-      contactList: [
-        {
-          letter: 'A',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'B',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'C',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        },
-        {
-          letter: 'D',
-          contact: [
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            },
-            {
-              avatar: avatar,
-              nickname: '呆呆'
-            }
-          ]
-        }
-      ],
+      contactList: [],
       listData: [],
       preEditable: false,
-      searchResult: []
+      searchResult: [],
+      selectUser: '',
+      clickUserData: '',
+      title: '',
+      showSearchList: false
     }
   },
   created () {
-    this.listData = this.chatList
     this.getUserInfo()
   },
   sockets: {
-    connect () { // 这里是监听connect事件
+    connect (data) { // 这里是监听connect事件
       this.socketId = this.$socket.id
       console.log('connect server: socketId', this.socketId)
     },
+<<<<<<< HEAD
     res (val) {
       console.log('client receive messgae : ', val)
     },
     requestFriend (val) {
       console.log('have a add friend request: ', val)
+=======
+    login (val) {
+      console.log('client receive messgae : login:  ', val)
+    },
+    addfriend (val) {
+      console.log('client revice add friend request', val)
+      this.$confirm(`${val.nickname} 请求加你为好友，验证信息：${val.message}`, '添加好友请求', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        UserApi.addFriend(val.userId).then(res => {
+          this.$message({
+            message: '好友添加成功',
+            type: 'success'
+          })
+        })
+      })
+    },
+    friends (data) {
+      this.listData = JSON.parse(JSON.stringify(data))
+      this.setUserFriendsList(data)
+      this.clickFriendList(this.listData[0])
+>>>>>>> ac2b20c17dd218bf5d923256dc437be6d7923fc7
     }
   },
   mounted () {
@@ -174,33 +142,77 @@ export default {
         .then(res => {
           if (res.success) {
             this.setUserInfo(res.data.user)
+<<<<<<< HEAD
+=======
+            this.listData = res.data.user.friends
+            this.$socket.emit('login', res.data.user)
+            this.clickFriendList(this.listData[0])
+>>>>>>> ac2b20c17dd218bf5d923256dc437be6d7923fc7
           }
         })
     },
     findUserList (value) {
+      if (!value) {
+        this.searchResult = []
+        return
+      }
       UserApi.find(value)
         .then(res => {
           if (res.success) {
-            this.searchResult = [{
-              type: '用户',
-              value: res.data.user
-            }]
+            this.searchResult = res.data
+            this.showSearchList = true
           }
         })
     },
-    clickSearchUserItem (data, type) {
-      if (type === 'add') {
-        this.$socket.emit('server', {}, this.userInfo)
+    searchListClick (data, type) {
+      this.clickUserData = data
+      this.dialog.type = type
+      this.dialog.title = type === 'add' ? '请填写验证信息' : ''
+      this.dialog.visible = true
+      this.dialog.content = ''
+    },
+    dialogCloseHandler () {
+      this.clickUserData = ''
+      this.dialog.content = ''
+    },
+    clickFriendList (data) {
+      if (!data) {
+        return
       }
+      this.saveFriendInfo(data)
+      this.title = data.nickname
+    },
+    sendAddFriendHandler () {
+      this.dialog.visible = false
+      this.showSearchList = false
+      UserApi.addUser(this.clickUserData._id, {
+        message: this.dialog.content
+      }).then(res => {
+        if (res.success) {
+          this.$message({
+            type: 'success',
+            message: res.msg
+          })
+        }
+      })
     },
     ...mapMutations({
-      setUserInfo: 'SET_USER'
+      setUserInfo: 'SET_USER',
+      saveFriendInfo: 'SAVE_FRIEND_INFO',
+      setUserFriendsList: 'SET_USER_FRIENDS_LIST'
     })
   }
 }
 </script>
 
 <style scoped lang="scss" rel="stylesheet/scss">
+  .el-button--primary {
+    background: #3daf35;
+    border-color: #3daf35;
+  }
+  .el-dialog__body {
+    padding-top: 20px !important;
+  }
   .layout {
     height: 80%;
     min-height: 600px;

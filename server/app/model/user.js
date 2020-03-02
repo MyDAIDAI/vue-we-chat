@@ -5,11 +5,16 @@ module.exports = app => {
 
   const UserSchema = new Schema({
     nickname: { type: String },
+    // 用户邮箱唯一
     userEmail: { type: String },
     password: { type: String },
+    socketId: {
+      type: String,
+      default: '',
+    },
     avatar: {
       type: String,
-      default: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1533019302401&di=ed0b72fd25e47aa8c540bccdbd072e6c&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fcaef76094b36acaf239dc5be7fd98d1001e99c76.jpg'
+      default: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3986557066,2648426149&fm=26&gp=0.jpg'
     },
     friends: {
       type: Array
@@ -17,9 +22,6 @@ module.exports = app => {
     loginStatus: {
       type: Boolean,
       default: false
-    },
-    requestFriends: {
-      type: Array
     },
     createTime: {
       type: Date,

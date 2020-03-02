@@ -7,13 +7,22 @@ export default {
   login (data) {
     return api.post(`/api/login`, data)
   },
+  setSocketId () {
+    return api.post('/api/set/socketId')
+  },
   getUserInfo () {
-    return api.get('/api/getuserinfo')
+    return api.get('/api/user/info')
   },
   find (name) {
     return api.get(`/api/user/find/${name}`)
   },
-  requestFriends (userInfo) {
-    return api.post('/api/user/request', userInfo)
+  addUser (id, data) {
+    return api.post(`/api/request/add/${id}`, data)
+  },
+  addFriend (friendId) {
+    return api.post(`/api/friend/add/${friendId}`)
+  },
+  getAllNotReceiveTalk (id) {
+    return api.get(`/api/talk/all/${id}`)
   }
 }

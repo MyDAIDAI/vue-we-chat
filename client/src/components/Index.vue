@@ -13,6 +13,10 @@
 import Login from '@/base/login/Login'
 import Register from '@/base/register/Register'
 import UserApi from '@/api/user/index'
+<<<<<<< HEAD
+=======
+// import { ERR_OK } from '@/common/js/config'
+>>>>>>> ac2b20c17dd218bf5d923256dc437be6d7923fc7
 import { mapMutations } from 'vuex'
 
 export default {
@@ -33,17 +37,30 @@ export default {
       UserApi.register(data)
         .then(res => {
           if (res.success) {
-            this.messageTipHandler(res.msg, 'success')
+            let type = res.msg.indexOf('成功') > -1 ? 'success' : 'info'
+            this.messageTipHandler(res.msg, type)
           }
         }).catch(err => {
-          this.messageTipHandler(err.errorMessage.message, 'error')
+          this.messageTipHandler(err.errorMessage && err.errorMessage.message, 'error')
         })
     },
     loginHandler (data) {
       UserApi.login(data)
         .then(res => {
+<<<<<<< HEAD
           this.createToken(res.data.token)
           this.$router.push('/talk')
+=======
+          if (res.success) {
+            if (res.msg === '登录成功') {
+              this.createToken(res.data.token)
+              this.setUserEmail(data.userEmail)
+              this.$router.push('/talk')
+            } else {
+              this.messageTipHandler(res.msg, 'error')
+            }
+          }
+>>>>>>> ac2b20c17dd218bf5d923256dc437be6d7923fc7
         }).catch(err => {
           this.messageTipHandler(err.errorMessage.message, 'error')
         })
@@ -55,7 +72,8 @@ export default {
       })
     },
     ...mapMutations({
-      createToken: 'CREATE_TOKEN'
+      createToken: 'CREATE_TOKEN',
+      setUserEmail: 'SET_USER_EMAIL'
     })
   }
 }

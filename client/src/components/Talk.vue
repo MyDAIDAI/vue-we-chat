@@ -30,55 +30,94 @@
         <i class="file"></i>
       </div>
       <div class="content">
-        <pre class="flex" :contenteditable="preEditable" @click="preEditable = true"></pre>
+        <pre class="flex" :contenteditable="preEditable" @click="preEditable = true" id="sendMessage"></pre>
       </div>
       <div class="action">
         <span class="desc">按下Cmd+Enter换行</span>
-        <a class="btn btn_send" href="javascript:;">发送</a>
+        <a class="btn btn_send" href="javascript:;" @click="sendChatMessage">发送</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { avatar } from '@/common/js/config'
+import { mapGetters, mapMutations } from 'vuex'
+import UserApi from '@/api/user/index'
 export default {
   name: 'Talk',
   components: {},
+  computed: {
+    ...mapGetters(['friendInfo', 'userInfo', 'friendSockets'])
+  },
   data () {
     return {
       preEditable: false,
-      chatContent: [
-        {
-          time: '10:06',
-          avatar: avatar,
-          message: 'adsfadfas',
-          isSend: true
-        },
-        {
-          time: '10:06',
-          avatar: avatar,
-          message: 'adsfadfas',
-          isSend: false
-        },
-        {
-          time: '10:06',
-          avatar: avatar,
-          message: 'adsfadfas',
-          isSend: false
-        },
-        {
-          time: '10:06',
-          avatar: avatar,
-          message: 'adsfadfas',
-          isSend: true
-        }
-      ]
+      chatContent: []
     }
   },
   created () {
   },
+  mounted () {
+    // fix: 异步获取用户ID问题，待修复
+    setTimeout(() => {
+      this.getAllNotReceiveTalk()
+      console.log(JSON.stringify(this.$store.state.user.id))
+    }, 1000)
+    this.sendMessageDiv = document.getElementById('sendMessage')
+  },
+  sockets: {
+    chat (msg) {
+      this.pushChatContentHandler(msg, false)
+    },
+    friendLogin (val) {
+      if (val.userId === this.friendInfo.userId) {
+        this.setFriendLoginStatus(true)
+      }
+      this.setUserFriend(val)
+    }
+  },
   methods: {
+    getAllNotReceiveTalk () {
+      UserApi.getAllNotReceiveTalk(this.$store.state.user.id).then(res => {
+        console.log('talks', res)
+      })
+    },
+    sendChatMessage () {
+      let sendMessage = this.sendMessageDiv.innerHTML
+      this.sendMessageDiv.innerHTML = ''
+      this.pushChatContentHandler(sendMessage, true)
+      let sendObj = this.friendInfo.loginStatus ? {
+        msg: sendMessage,
+        socketId: this.friendSockets[this.friendInfo.userId],
+        loginStatus: true
+      } : {
+        sendId: this.userInfo.id,
+        receiveId: this.friendInfo.id,
+        message: sendMessage,
+        loginStatus: false
+      }
+      this.$socket.emit('chat', sendObj)
+    },
+    pushChatContentHandler (msg, isSend) {
+      this.chatContent.push({
+        time: new Date(),
+        avatar: isSend ? this.userInfo.avatar : this.friendInfo.avatar,
+        message: msg,
+        isSend: isSend
+      })
+    },
+    ...mapMutations({
+      setUserFriend: 'SET_USER_FRIEND',
+      setFriendLoginStatus: 'SET_FRIEND_LOGIN_STATUS'
+    })
+  },
+  watch: {
+    friendInfo: {
+      handler (data) {
+        this.chatContent = []
+      },
+      deep: true
+    }
   }
 }
 </script>

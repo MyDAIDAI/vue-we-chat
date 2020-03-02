@@ -23,12 +23,23 @@ module.exports = appInfo => {
 
   config.cors = {
     credentials: true,
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
 
   config.mongoose = {
     url: 'mongodb://127.0.0.1/vue-we-chat',
-    options: {},
+    options: {
+      server: {
+        auto_reconnect: true,
+        poolSize: 10,
+      },
+    },
   };
-
+  config.alinode = {
+    // 从 `Node.js 性能平台` 获取对应的接入参数
+    appid: 81909,
+    secret: '24975000ac8261ac900f83b1aff27a6099b1c4ae',
+  };
   return config;
 };

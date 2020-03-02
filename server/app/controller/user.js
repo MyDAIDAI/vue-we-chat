@@ -13,7 +13,7 @@ class UserController extends Controller {
     let retData = {};
     if (findUser) {
       retData = {
-        code: 401,
+        code: 200,
         msg: '用户已存在，请登陆',
       };
     } else {
@@ -36,6 +36,7 @@ class UserController extends Controller {
           uid: userLogin._id,
           exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 * 7, // 过期时间为7天
         }, app.config.cert);
+        await service.user.updateOneUserInfo(userLogin.userEmail, { loginStatus: true })
         retData = {
           msg: '登录成功',
           code: 200,
@@ -44,6 +45,7 @@ class UserController extends Controller {
             token,
           },
         };
+        userLogin.loginStatus = true;
       } else {
         retData = {
           code: 401,
@@ -62,10 +64,13 @@ class UserController extends Controller {
     const { ctx, service } = this;
     const userId = ctx.token.uid;
     const findUser = await service.user.findOneByUserId(userId);
+    const friends = await service.user.findAllUsersById(findUser.friends)
     let retData = {
       code: 401,
       msg: '该用户不存在!',
     };
+    delete findUser.friends
+    findUser.friends = friends
     if (findUser) {
       retData = {
         code: 200,
@@ -87,9 +92,12 @@ class UserController extends Controller {
     if (findUsers) {
       retData = {
         code: 200,
-        data: {
-          user: findUsers,
-        },
+        data: [
+          {
+            type: '用户',
+            value: findUsers,
+          },
+        ],
       };
     }
     resHandle(ctx, retData);
