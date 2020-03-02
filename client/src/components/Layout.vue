@@ -2,7 +2,12 @@
   <div class="layout">
     <div class="content-wrapper">
       <div class="panel">
-        <card @go="goPage" :user="userInfo" :searchResult="searchResult" @input="findUserList"></card>
+        <card
+          @go="goPage"
+          :user="userInfo"
+          :searchResult="searchResult"
+          @input="findUserList"
+          @click="clickSearchUserItem"></card>
         <list :lists="listData" :type="listType"></list>
       </div>
       <div class="box">
@@ -26,7 +31,7 @@
 import Card from '@/base/card/Card'
 import List from '@/base/list/List'
 import UserApi from '@/api/user/index'
-import { avatar, ERR_OK } from '@/common/js/config'
+import { avatar } from '@/common/js/config'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
@@ -153,11 +158,12 @@ export default {
     },
     res (val) {
       console.log('client receive messgae : ', val)
+    },
+    requestFriend (val) {
+      console.log('have a add friend request: ', val)
     }
   },
   mounted () {
-    // 往服务端发送消息
-    this.$socket.emit('server', {nickname: '111'})
   },
   methods: {
     goPage (page) {
@@ -166,18 +172,26 @@ export default {
     getUserInfo () {
       UserApi.getUserInfo()
         .then(res => {
-          if (res.data.code === ERR_OK) {
-            this.setUserInfo(res.data.data)
+          if (res.success) {
+            this.setUserInfo(res.data.user)
           }
         })
     },
     findUserList (value) {
       UserApi.find(value)
         .then(res => {
-          if (res.data.code === ERR_OK) {
-            this.searchResult = res.data.data
+          if (res.success) {
+            this.searchResult = [{
+              type: '用户',
+              value: res.data.user
+            }]
           }
         })
+    },
+    clickSearchUserItem (data, type) {
+      if (type === 'add') {
+        this.$socket.emit('server', {}, this.userInfo)
+      }
     },
     ...mapMutations({
       setUserInfo: 'SET_USER'

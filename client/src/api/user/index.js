@@ -12,5 +12,8 @@ export default {
   },
   find (name) {
     return api.get(`/api/user/find/${name}`)
+  },
+  requestFriends (userInfo) {
+    return api.post('/api/user/request', userInfo)
   }
 }

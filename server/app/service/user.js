@@ -3,7 +3,7 @@ const Service = require('egg').Service;
 const NOT_FIND = 0;
 class UserService extends Service {
   /**
-   * 通过uerEmail 查找用户
+   * 通过userEmail 查找用户
    * @param {string} userEmail 用户邮箱
    * @param {object} sendDataFormat 返回数据格式
    * @return {Promise<*>} 返回查找结果，没有结果则返回0
@@ -17,7 +17,7 @@ class UserService extends Service {
     return NOT_FIND;
   }
   /**
-   * 通过uerEmail 查找用户
+   * 通过userEmail 查找用户
    * @param {string} userId 用户id
    * @param {object} sendDataFormat 返回数据格式
    * @return {Promise<*>} 返回查找结果，没有结果则返回0
@@ -31,7 +31,7 @@ class UserService extends Service {
     return NOT_FIND;
   }
   /**
-   * 通过uerEmail 查找用户
+   * 通过userEmail 查找用户
    * @param {string} nickname 用户昵称
    * @param {object} sendDataFormat 返回数据格式
    * @return {Promise<*>} 返回查找结果，没有结果则返回0

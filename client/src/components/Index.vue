@@ -13,7 +13,6 @@
 import Login from '@/base/login/Login'
 import Register from '@/base/register/Register'
 import UserApi from '@/api/user/index'
-import { ERR_OK } from '@/common/js/config'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -33,8 +32,8 @@ export default {
     registerHandler (data) {
       UserApi.register(data)
         .then(res => {
-          if (res.data.code === ERR_OK) {
-            this.messageTipHandler(res.data.msg, 'success')
+          if (res.success) {
+            this.messageTipHandler(res.msg, 'success')
           }
         }).catch(err => {
           this.messageTipHandler(err.errorMessage.message, 'error')
@@ -43,14 +42,8 @@ export default {
     loginHandler (data) {
       UserApi.login(data)
         .then(res => {
-          if (res.data.code === ERR_OK) {
-            if (res.data.msg === '登录成功') {
-              this.createToken(res.data.token)
-              this.$router.push('/talk')
-            } else {
-              this.messageTipHandler(res.data.msg, 'error')
-            }
-          }
+          this.createToken(res.data.token)
+          this.$router.push('/talk')
         }).catch(err => {
           this.messageTipHandler(err.errorMessage.message, 'error')
         })
