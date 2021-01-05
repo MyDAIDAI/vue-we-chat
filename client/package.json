@@ -14,7 +14,7 @@
     "public": "rm -rf ../public/* && npm run build && mv ./dist/* ../public/"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "better-scroll": "^1.12.5",
     "element-ui": "^2.4.7",
     "vue": "^2.5.2",
